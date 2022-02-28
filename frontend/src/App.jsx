@@ -5,7 +5,6 @@ import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 
 function App() {
   return (
-    // Wrapper class
     <div className="flex flex-col h-screen w-screen bg-white">
       <BrowserRouter>
         <NavBar />
