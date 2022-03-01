@@ -1,6 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
 import NavBar from './components/NavBar';
+import Dashboard from './views/dashboard/Dashboard';
+import NoView from './views/NoView';
+import Activities from './views/dashboard/widgets/Activities';
+import WordsLearned from './views/dashboard/widgets/WordsLearned';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 
 function App() {
@@ -9,11 +12,15 @@ function App() {
       <BrowserRouter>
         <NavBar />
         <Routes>
-          <Route path="/" element={<Navigate replace to="/dashboard"/>} />
-          <Route path="dashboard" element={<><p className="text-black">Dashboard</p></>} />
+          <Route index path="/" element={<Navigate replace to="/dashboard/activity" />} />
+          <Route path="dashboard" element={<Dashboard/>}>
+            <Route index path="activity" element={<Activities/>} />
+            <Route index path="history" element={<WordsLearned/>} />
+          </Route>
           <Route path="categories" element={<><p className="text-black">Categories</p></>} />
           <Route path="sign-up" element={<><p className="text-black">Sign Up</p></>} />
           <Route path="login" element={<><p className="text-black">Login</p></>} />
+          <Route path="*" element={<NoView />} />
         </Routes>
       </BrowserRouter>
     </div>
