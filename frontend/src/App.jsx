@@ -1,9 +1,10 @@
 import './App.css';
 import NavBar from './components/NavBar';
-import Dashboard from './views/dashboard/Dashboard';
 import NoView from './views/NoView';
+import Dashboard from './views/dashboard/Dashboard';
 import Activities from './views/dashboard/widgets/Activities';
 import WordsLearned from './views/dashboard/widgets/WordsLearned';
+import Categories from './views/categories/Categories';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
             <Route index path="activity" element={<Activities/>} />
             <Route index path="history" element={<WordsLearned/>} />
           </Route>
-          <Route path="categories" element={<><p className="text-black">Categories</p></>} />
+          <Route path="categories" element={<Categories/>} />
           <Route path="sign-up" element={<><p className="text-black">Sign Up</p></>} />
           <Route path="login" element={<><p className="text-black">Login</p></>} />
           <Route path="*" element={<NoView />} />
