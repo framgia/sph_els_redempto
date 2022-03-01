@@ -20,6 +20,7 @@ const Activities = () => {
     '14',
     '15',
   ]
+  
   return (
     <div className="inline-block align-top h-full w-8/12 p-10 box-sizing">
         <span className="text-2xl">Activities</span>

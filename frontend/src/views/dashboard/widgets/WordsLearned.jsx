@@ -24,6 +24,7 @@ const WordsLearned = () => {
     '19',
     '20',
   ]
+  
   return (
     <div className="inline-block align-top h-full w-8/12 p-10">
       <span className="text-2xl">Words Learned</span>
