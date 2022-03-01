@@ -1,5 +1,6 @@
 import React from 'react'
-import Avatar from '../../../components/Avatar';
+import Avatar from './Avatar';
+import {Link} from 'react-router-dom';
 
 function ActivityItem() {
     return (
@@ -7,7 +8,8 @@ function ActivityItem() {
             <Avatar />
             <div className="inline-block w-5/6 ml-4 mt-3">
                 <div>
-                    <span className="text-red font-bold">User</span> learned 20 of 20 words in <span className="text-red font-bold">Category</span>
+                    <Link to = "../../users/1/activity"><span className="text-red font-bold">User </span> </Link>
+                    learned 20 of 20 words in <span className="text-red font-bold">Category</span>
                 </div>
                 <div>
                     <span className="text-gray-500 font-bold">2 days ago</span>

@@ -2,9 +2,10 @@ import './App.css';
 import NavBar from './components/NavBar';
 import NoView from './views/NoView';
 import Dashboard from './views/dashboard/Dashboard';
-import Activities from './views/dashboard/widgets/Activities';
-import WordsLearned from './views/dashboard/widgets/WordsLearned';
+import Activities from './components/Activities';
+import WordsLearned from './components/WordsLearned';
 import Categories from './views/categories/Categories';
+import Profile from './views/profile/Profile';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 
 function App() {
@@ -17,6 +18,11 @@ function App() {
           <Route path="dashboard" element={<Dashboard/>}>
             <Route index path="activity" element={<Activities/>} />
             <Route index path="history" element={<WordsLearned/>} />
+          </Route>
+          <Route path="users/:id" element={<Profile/>}>
+            <Route index path="activity" element={<Activities/>} />
+            <Route index path="history" element={<WordsLearned/>} />
+          <Route path="*" element={<NoView />} />
           </Route>
           <Route path="categories" element={<Categories/>} />
           <Route path="sign-up" element={<><p className="text-black">Sign Up</p></>} />
