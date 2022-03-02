@@ -11,6 +11,8 @@ import Lessons from './views/lessons/Lessons';
 import LessonSplash from './views/lessons/widgets/LessonSplash';
 import LessonItem from './views/lessons/widgets/LessonItem';
 import LessonReview from './views/lessons/widgets/LessonReview';
+import SignUp from './views/authentication/SignUp';
+import Login from './views/authentication/Login';
 
 function App() {
   return (
@@ -35,8 +37,8 @@ function App() {
           <Route path="*" element={<NoView />} />
           </Route>
           <Route path="categories" element={<Categories/>} />
-          <Route path="sign-up" element={<><p className="text-black">Sign Up</p></>} />
-          <Route path="login" element={<><p className="text-black">Login</p></>} />
+          <Route path="sign-up" element={<SignUp/>} />
+          <Route path="login" element={<Login/>} />
           <Route path="*" element={<NoView />} />
         </Routes>
       </BrowserRouter>
