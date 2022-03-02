@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Avatar() {
+function Avatar({className = "inline-block w-16", isRounded = true}) {
   return (
-    <div class="avatar placeholder inline-block align-top">
-        <div class="bg-neutral-focus text-neutral-content rounded-full w-16 h-full">
+    <div class={`avatar placeholder align-top ${className}`}>
+        <div class={`bg-neutral-focus text-neutral-content h-full ${isRounded ? "rounded-full" : ""}`}>
             <span class="text-3xl">K</span>
         </div>
     </div>

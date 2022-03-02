@@ -1,5 +1,5 @@
 import React from 'react'
-import Divider from '../../../components/Divider';
+import Divider from './Divider';
 import ActivityItem from './ActivityItem';
 
 const Activities = () => {

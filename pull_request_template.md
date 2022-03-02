@@ -1,7 +1,7 @@
-[Asana Link]
+# Asana Link
 
 
-[Commands]
+# Commands
 ```
 Back-end:
 - `php artisan serve`
@@ -10,10 +10,10 @@ Front-end:
 - `npm start`
 ```
 
-[Pre-conditions]
+# Pre-conditions
 
-[Expected Output]
+# Expected Output
 
-[Notes]
+# Notes
 
-[Screenshots]
+# Screenshots
