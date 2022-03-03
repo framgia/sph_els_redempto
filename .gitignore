@@ -6,6 +6,9 @@ package-lock.json
 
 
 # local env files
+.env
+.env.backup
+.phpunit.result.cache
 .env.local
 .env.*.local
 
@@ -23,3 +26,11 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Backend related files
+public/hot
+public/storage
+storage/*.key
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
