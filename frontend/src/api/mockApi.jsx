@@ -1,5 +1,5 @@
-const getData = () => {
-    let promise = fetch('./data.json'
+const getData = (uri) => {
+    let promise = fetch(uri
         , {
             headers: {
                 'Content-Type': 'application/json',
@@ -7,9 +7,8 @@ const getData = () => {
             }
         }
     )
-    .then((response) => response.json())
+        .then((response) => response.json())
     return promise
 }
 
-export default getData;
-
+export { getData };
