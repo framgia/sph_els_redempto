@@ -7,6 +7,10 @@ import WordsLearned from './components/WordsLearned';
 import Categories from './views/categories/Categories';
 import Profile from './views/profile/Profile';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
+import Lessons from './views/lessons/Lessons';
+import LessonSplash from './views/lessons/widgets/LessonSplash';
+import LessonItem from './views/lessons/widgets/LessonItem';
+import LessonReview from './views/lessons/widgets/LessonReview';
 
 function App() {
   return (
@@ -15,9 +19,15 @@ function App() {
         <NavBar />
         <Routes>
           <Route index path="/" element={<Navigate replace to="/dashboard/activity" />} />
-          <Route path="dashboard" element={<Dashboard/>}>
-            <Route index path="activity" element={<Activities/>} />
-            <Route index path="history" element={<WordsLearned/>} />
+          <Route path="dashboard" element={<Dashboard />}>
+            <Route index path="activity" element={<Activities />} />
+            <Route path="history" element={<WordsLearned />} />
+          </Route>
+          <Route path="categories" element={<Categories />} />
+          <Route path="lesson" element={<Lessons />}>
+            <Route path=":lessonSlug" element={<LessonSplash />}/>
+            <Route path=":lessonSlug/review" element={<LessonReview />}/>
+            <Route path=":lessonSlug/:itemNo" element={<LessonItem />}/>
           </Route>
           <Route path="users/:id" element={<Profile/>}>
             <Route index path="activity" element={<Activities/>} />
