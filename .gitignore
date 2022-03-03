@@ -6,11 +6,9 @@ package-lock.json
 
 
 # local env files
-.env
-.env.backup
+backend/.env
+backend/.env.*
 .phpunit.result.cache
-.env.local
-.env.*.local
 
 # Log files
 npm-debug.log*
