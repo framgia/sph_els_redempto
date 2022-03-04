@@ -1,34 +1,38 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { getData } from '../../api/mockApi';
 import Divider from '../../components/Divider'
 
-function LessonEdit() {
+const LessonEdit = () => {
     const [lesson, setLesson] = useState([])
     const [lessonTitle, setLessonTitle] = useState("")
     const [lessonBody, setLessonBody] = useState("")
 
-    const { lessonId } = useParams()
+    const { lessonSlug } = useParams()
     useEffect(() => {
         getData("http://localhost:3000/data.json")
             .then(json => {
-                const x = json.categories.find(category => category.id === parseInt(lessonId))
+                const x = json.categories.find(category => category.slug === lessonSlug)
                 setLesson(x)
                 setLessonTitle(x.title)
                 setLessonBody(x.body)
             })
-    }, [lessonId])
+    }, [lessonSlug])
+
+    const handleSubmit = () => {
+        alert("Edited Category!") 
+    }
 
     return (
         <div className="flex-1 w-fulltext-black item">
             <div className="h-full flex flex-col w-8/12 m-auto text-black p-4">
                 <div className="flex justify-between items-center">
                     <span className="text-2xl font-bold">Editing Lesson: {lesson.title}</span>
-                    <button className="btn btn-ghost text-blue-600" onClick={() => { console.log("Editing Words") }}>Edit words</button>
+                    <Link to="words" className="btn btn-ghost text-blue-600">Edit words</Link>
                 </div>
                 <Divider />
-                <form className="form-control flex-1 p-3" onSubmit={() => { alert("Edited Category!") }}>
+                <form className="form-control flex-1 p-3" onSubmit={() => {handleSubmit()}}>
                     <label className="label">
                         <span className="label-text text-black text-xl font-bold">Title</span>
                     </label>

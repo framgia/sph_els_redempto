@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { getData } from '../../api/mockApi';
 import Divider from '../../components/Divider'
 
-function CategoryEdit() {
+const CategoryEdit = () => {
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ function CategoryEdit() {
     }
 
     return (
-        <div className="flex-1 w-fulltext-black item">
+        <div className="flex-1 w-full text-black item">
             <div className="h-full w-8/12 m-auto text-black p-4 justify-around">
                 <div>
                     <div className = "flex justify-between items-center">
@@ -47,7 +47,7 @@ function CategoryEdit() {
                                                 <th>{category.id}</th>
                                                 <td>{category.title}</td>
                                                 <td className="flex justify-end">
-                                                    <Link to={`${category.id}`} className="btn btn-ghost text-blue-600">Edit</Link>
+                                                    <Link to={`${category.slug}`} className="btn btn-ghost text-blue-600">Edit</Link>
                                                 </td>
                                             </tr>
                                         )

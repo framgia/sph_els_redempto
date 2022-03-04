@@ -2,9 +2,13 @@ import React from 'react'
 import { useState } from 'react'
 import Divider from '../../components/Divider'
 
-function CategoryAdd() {
+const CategoryAdd = () => {
     const [lessonTitle, setLessonTitle] = useState("")
     const [lessonBody, setLessonBody] = useState("")
+
+    const handleSubmit = () => {
+        alert("Added Category!") 
+    }
 
     return (
         <div className="flex-1 w-fulltext-black item">
@@ -13,7 +17,7 @@ function CategoryAdd() {
                     <span className="text-2xl font-bold">Add Category</span>
                 </div>
                 <Divider />
-                <form className="form-control flex-1 p-3" onSubmit={() => { alert("Added Category!") }}>
+                <form className="form-control flex-1 p-3" onSubmit={() => { handleSubmit() }}>
                     <label className="label">
                         <span className="label-text text-black text-xl font-bold">Title</span>
                     </label>
@@ -38,7 +42,7 @@ function CategoryAdd() {
                         }}>
                     </textarea>
                     <div className="flex justify-end mt-4">
-                        <input type="submit" value="Submit" className="btn" />
+                        <input type="submit" value="Add" className="btn" />
                     </div>
                 </form>
             </div>
