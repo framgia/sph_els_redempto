@@ -1,5 +1,8 @@
+import axios from 'axios';
+
 const getData = (uri) => {
-    let promise = fetch(uri
+    let promise = axios.get(
+        uri
         , {
             headers: {
                 'Content-Type': 'application/json',
@@ -7,7 +10,7 @@ const getData = (uri) => {
             }
         }
     )
-        .then((response) => response.json())
+        .then((response) => response.data)
     return promise
 }
 
