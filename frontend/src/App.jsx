@@ -13,6 +13,11 @@ import LessonItem from './views/lessons/widgets/LessonItem';
 import LessonReview from './views/lessons/widgets/LessonReview';
 import SignUp from './views/authentication/SignUp';
 import Login from './views/authentication/Login';
+import CategoryEdit from './views/admin/CategoryEdit';
+import CategoryAdd from './views/admin/CategoryAdd';
+import LessonEdit from './views/admin/LessonEdit';
+import WordsEdit from './views/admin/WordsEdit';
+import WordEdit from './views/admin/WordEdit';
 
 function App() {
   return (
@@ -37,6 +42,11 @@ function App() {
           <Route path="*" element={<NoView />} />
           </Route>
           <Route path="categories" element={<Categories/>} />
+          <Route path="categories/add" element={<CategoryAdd/>} />
+          <Route path="categories/edit" element={<CategoryEdit/>} />
+          <Route path="categories/edit/:lessonSlug" element={<LessonEdit/>} />
+          <Route path="categories/edit/:lessonSlug/words" element={<WordsEdit/>} />
+          <Route path="categories/edit/:lessonSlug/words/:wordId" element={<WordEdit/>} />
           <Route path="sign-up" element={<SignUp/>} />
           <Route path="login" element={<Login/>} />
           <Route path="*" element={<NoView />} />

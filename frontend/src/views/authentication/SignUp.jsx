@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Divider from '../../components/Divider'
 
 const SignUp = () => {
     const [fullName, setFullName] = useState("")

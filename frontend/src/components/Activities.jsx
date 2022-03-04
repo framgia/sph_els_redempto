@@ -26,7 +26,7 @@ const Activities = () => {
         <span className="text-2xl">Activities</span>
         <Divider/>
         <div className="w-full mt-5 h-most overflow-auto no-scrollbar">
-          {activityList.map((activity) => <ActivityItem/>)}
+          {activityList.map((activity) => <ActivityItem key={activity}/>)}
         </div>
     </div>
   )
