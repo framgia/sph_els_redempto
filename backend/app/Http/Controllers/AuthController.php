@@ -8,12 +8,13 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $field = $request->validate([
-            'full_name' => 'required|string',
-            'user_name' => 'required|string|unique:users,user_name',
-            'email' => 'required|string|unique:users,email',
-            'password' => 'required|string|confirmed',
+            'full_name' => ['required', 'string'],
+            'user_name' => ['required', 'string', 'unique:users,user_name'],
+            'email' => ['required', 'string', 'unique:users,email'],
+            'password' => ['required', 'string', 'confirmed'],
         ]);
 
         $user = User::create([
@@ -31,24 +32,25 @@ class AuthController extends Controller
 
         return response($response, 201);
     }
-    
-    public function login(Request $request) {
+
+    public function login(Request $request)
+    {
         $fields = $request->validate([
-            'user_name' => 'required|string',
-            'password' => 'required|string',
+            'user_name' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ]);
 
         $user = User::where('user_name', $fields['user_name'])->first();
 
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
-               'message' => 'Invalid Credentials'
+                'message' => 'Invalid Credentials'
             ], 401);
         }
 
         $token = "";
 
-        if($user->is_admin) {
+        if ($user->is_admin) {
             $token = $user->createToken('admin_token')->plainTextToken;
         }
 
@@ -60,7 +62,8 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
-    public function logout (Request $request) {
+    public function logout(Request $request)
+    {
         auth()->user()->tokens()->delete();
 
         return [
