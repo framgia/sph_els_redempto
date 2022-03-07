@@ -7,7 +7,6 @@ package-lock.json
 
 # local env files
 backend/.env
-backend/.env.*
 .phpunit.result.cache
 
 # Log files
