@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const getData = (uri) => {
-    let promise = axios.get(
-        uri
+const getData = async (uri, endpoint) => {
+    let data = await axios.get(
+        `${uri}api/${endpoint}`
         , {
             headers: {
                 'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ const getData = (uri) => {
         }
     )
         .then((response) => response.data)
-    return promise
+    return data
 }
 
 export { getData };

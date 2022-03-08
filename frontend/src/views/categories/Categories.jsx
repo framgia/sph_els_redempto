@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { getData } from '../../api/mockApi';
+import { getData } from '../../api/api';
+import axios from 'axios'
 import { Link } from 'react-router-dom';
 import Divider from '../../components/Divider';
 import CategoryItem from './widgets/CategoryItem';
@@ -9,10 +10,14 @@ const Categories = () => {
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
-        getData("http://localhost:3000/data.json")
-            .then((json) => {
-                setCategoryList(json.categories)
-            })
+        let categories = []
+
+        const getCategories = async () => {
+            setCategoryList(await getData("http://localhost:8000/", "categories"));
+        }
+
+        getCategories();
+        setCategoryList(categories)
     }, [])
 
     return (
@@ -24,7 +29,7 @@ const Categories = () => {
             <Divider />
             <div className="h-most overflow-scroll no-scrollbar">
                 <div className="flex flex-wrap">
-                    {categoryList.map(category => (<CategoryItem key={category.id} id={category.id} slug={category.slug} title={category.title} body={category.body} />))}
+                    {categoryList.map(category => (<CategoryItem key={category.id} id={category.id} slug={category.slug} title={category.title} description={category.description} />))}
                 </div>
             </div>
         </div>
