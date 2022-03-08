@@ -1,30 +1,33 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
 import { getData } from '../../api/api';
-import axios from 'axios'
 import { Link } from 'react-router-dom';
 import Divider from '../../components/Divider';
 import CategoryItem from './widgets/CategoryItem';
+import { AppContext } from '../../context/AppContext';
 
 const Categories = () => {
+    const context = React.useContext(AppContext);
+    const [currentUser, setCurrentUser] = context.user;
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
-        let categories = []
-
         const getCategories = async () => {
             setCategoryList(await getData("http://localhost:8000/", "categories"));
         }
-
         getCategories();
-        setCategoryList(categories)
     }, [])
 
     return (
         <div className="text-black flex-1 w-10/12 m-auto p-10">
             <div className="w-full flex flex-row justify-between items-center">
                 <span className="text-2xl font-bold">Categories</span>
-                <Link to="edit" className="btn btn-ghost text-info">Edit</Link>
+                {
+                    (currentUser != null && currentUser.user.is_admin) ?
+
+                        <Link to="edit" className="btn btn-ghost text-info">Edit</Link> :
+                        <></>
+                }
             </div>
             <Divider />
             <div className="h-most overflow-scroll no-scrollbar">
