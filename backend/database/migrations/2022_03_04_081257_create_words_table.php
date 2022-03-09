@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id');
+            $table->string('word');
             $table->json('choices');
             $table->string('correct_answer');
             $table->timestamps();

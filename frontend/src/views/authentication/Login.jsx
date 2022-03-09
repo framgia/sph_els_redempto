@@ -17,10 +17,17 @@ const Login = () => {
         formData.append('user_name', username);
         formData.append('password', password);
 
-        const getUser = async() => {
+        const getUser = async () => {
             const user = await postFormData("http://127.0.0.1:8000/", "login", formData)
-            setCurrentUser(user);
-            navigate("/");
+            
+            if (!(typeof user === 'undefined')) {
+                setCurrentUser(user);
+                navigate("/");
+            }
+            else {
+                setUsername("")
+                setPassword("")
+            }
         }
         getUser();
     }
@@ -30,7 +37,7 @@ const Login = () => {
             <div className="h-auto w-5/12 bg-info px-4 py-8 m-auto rounded-2xl text-white">
                 <span className="font-bold text-5xl">Login</span>
                 <form className='mt-12' onSubmit={handleSubmit} >
-                    
+
                     <label className="label">
                         <span className="label-text mr-3 text-xl">Username:</span>
                         <input

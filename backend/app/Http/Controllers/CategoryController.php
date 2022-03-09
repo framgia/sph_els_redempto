@@ -82,4 +82,20 @@ class CategoryController extends Controller
     {
         //
     }
+
+    public function getWordsBySlug($slug) {
+        return Category::where('slug', $slug)->first()->words;
+    }
+
+    public function getWordsBySlugAndId($slug, $id) {
+        $words = Category::where('slug', $slug)->first()->words;
+
+        foreach($words as $word) {
+            if ($word->id == $id) {
+                return $word;
+            }
+        }
+
+        return [];
+    }
 }

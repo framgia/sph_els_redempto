@@ -11,7 +11,7 @@ import Categories from './views/categories/Categories';
 import Profile from './views/profile/Profile';
 import Lessons from './views/lessons/Lessons';
 import LessonSplash from './views/lessons/widgets/LessonSplash';
-import LessonItem from './views/lessons/widgets/LessonItem';
+import LessonQuiz from './views/lessons/widgets/LessonQuiz';
 import LessonReview from './views/lessons/widgets/LessonReview';
 import SignUp from './views/authentication/SignUp';
 import Login from './views/authentication/Login';
@@ -39,7 +39,7 @@ function App() {
             <Route path="lesson" element={<Lessons />}>
               <Route path=":lessonSlug" element={<LessonSplash />} />
               <Route path=":lessonSlug/review" element={<LessonReview />} />
-              <Route path=":lessonSlug/:itemNo" element={<LessonItem />} />
+              <Route path=":lessonSlug/quiz" element={<LessonQuiz />} />
             </Route>
             <Route path="users/:id" element={<Profile />}>
               <Route index path="activity" element={<Activities />} />

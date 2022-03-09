@@ -19,6 +19,8 @@ use App\Http\Controllers\AuthController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/words/{slug}', [CategoryController::class, 'getWordsBySlug']);
+Route::get('/categories/words/{slug}/{id}', [CategoryController::class, 'getWordsBySlugAndId']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
