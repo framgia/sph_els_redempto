@@ -1,17 +1,42 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { postFormData } from '../../api/api'
+import { AppContext } from '../../context/AppContext'
 
 const SignUp = () => {
+    const navigate = useNavigate();
+    const context = React.useContext(AppContext)
+    const [currentUser, setCurrentUser] = context.user
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [cPassword, setCPassword] = useState("")
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('full_name', fullName);
+        formData.append('user_name', username);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('password_confirmation', cPassword);
+
+        const getUser = async() => {
+            const user = await postFormData("http://127.0.0.1:8000/", "register", formData)
+            setCurrentUser(user);
+            navigate("/");
+        }
+
+        getUser();
+    }
+
     return (
         <div className="text-black flex flex-1">
             <div className="h-auto w-5/12 bg-info px-4 py-10 m-auto rounded-2xl text-white">
                 <span className="font-bold text-5xl">Sign up</span>
-                <form className='mt-12' onSubmit={() => alert("Signed up!")} >
+                <form className='mt-12' onSubmit={handleSubmit} >
                     <label className="label">
                         <span className="label-text mr-3 text-xl">Full Name:</span>
                         <input

@@ -1,7 +1,25 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { authPostData } from '../api/api';
+import { AppContext } from '../context/AppContext';
 
 const NavBar = () => {
+    const context = React.useContext(AppContext);
+    const [currentUser, setCurrentUser] = context.user;
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+
+        const logout = async () => {
+            const response = await authPostData('http://127.0.0.1:8000/', 'logout', currentUser.token)
+            console.log(response)
+            setCurrentUser(null)
+            navigate("/")
+        }
+
+        logout()
+    }
+
     return (
         <div className="navbar bg-blue-400 p-0">
             <div className="navbar-start">
@@ -10,14 +28,22 @@ const NavBar = () => {
                 </span>
                 <div className="divider divider-horizontal"></div>
                 <span className='text-xl font-bold'>
-                <Link to="/categories" className='btn-ghost p-5'>Categories</Link>
+                    <Link to="/categories" className='btn-ghost p-5'>Categories</Link>
                 </span>
             </div>
             <div className="navbar-center">
             </div>
             <div className="navbar-end">
-                <Link to="/sign-up" className="btn-ghost p-5 btn-lg">Sign Up</Link>
-                <Link to="/login" className="btn-ghost p-5 btn-lg">Login</Link>
+                {
+                    currentUser === null?
+                        <div>
+                            <Link to="/sign-up" className="btn-ghost p-5 btn-lg">Sign Up</Link>
+                            <Link to="/login" className="btn-ghost p-5 btn-lg">Login</Link>
+                        </div> :
+
+                        <button onClick={handleLogout} className="btn-ghost p-5 btn-lg">Logout</button>
+                }
+
             </div>
 
         </div>

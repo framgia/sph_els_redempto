@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -28,6 +29,7 @@ class AuthController extends Controller
 
         $response = [
             'user' => $user,
+            'token' => $token,
         ];
 
         return response($response, 201);
@@ -40,19 +42,16 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $user = User::where('user_name', $fields['user_name'])->first();
-
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
+        if (Auth::attempt($fields)) {
+            $user = User::where('user_name', $fields['user_name'])->first();
+        }
+        else {
             return response([
                 'message' => 'Invalid Credentials'
             ], 401);
         }
 
-        $token = "";
-
-        if ($user->is_admin) {
-            $token = $user->createToken('admin_token')->plainTextToken;
-        }
+        $token = $user->createToken('admin_token')->plainTextToken;
 
         $response = [
             'user' => $user,
@@ -66,8 +65,8 @@ class AuthController extends Controller
     {
         auth()->user()->tokens()->delete();
 
-        return [
+        return response([
             'message' => 'Logged out'
-        ];
+        ], 201);
     }
 }
