@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { getData } from '../../../api/api';
+import { API } from '../../../api/api';
 
 const LessonQuiz = () => {
     const navigate = useNavigate();
@@ -11,16 +11,11 @@ const LessonQuiz = () => {
     const [score, setScore] = useState(0);
 
     useEffect(() => {
-        const getWordList = async () => {
-            const result = await getData("http://localhost:8000/", `categories/words/${lessonSlug}`);
-            setWordList(result);
-        }
-        getWordList()
+        API.get(`categories/${lessonSlug}/words`)
+            .then(response => {
+                setWordList(response.data)
+            })
     }, [lessonSlug])
-
-    useEffect(() => {
-        console.log(score)
-    }, [score])
 
     const renderLessonItem = () => {
         if (wordList == null) {

@@ -1,10 +1,11 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { getData } from '../../api/api';
+import { API } from '../../api/api';
 import { Link } from 'react-router-dom';
 import Divider from '../../components/Divider';
 import CategoryItem from './widgets/CategoryItem';
 import { AppContext } from '../../context/AppContext';
+import axios from 'axios';
 
 const Categories = () => {
     const context = React.useContext(AppContext);
@@ -12,10 +13,10 @@ const Categories = () => {
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
-        const getCategories = async () => {
-            setCategoryList(await getData("http://localhost:8000/", "categories"));
-        }
-        getCategories();
+        API.get("categories")
+            .then((response) => {
+                setCategoryList(response.data)
+            })
     }, [])
 
     return (

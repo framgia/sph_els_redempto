@@ -41,8 +41,8 @@ const WordsLearned = () => {
               </tr>
             </thead>
             <tbody>
-              {wordList.map((word) => (
-                <tr>
+              {wordList.map((word, index) => (
+                <tr key={index}>
                   <th>{word}</th>
                   <td>Japanese</td>
                   <td>English</td>

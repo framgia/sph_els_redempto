@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { postFormData } from '../../api/api'
+import { API } from '../../api/api'
 import { AppContext } from '../../context/AppContext'
 
 const Login = () => {
@@ -16,20 +16,20 @@ const Login = () => {
         const formData = new FormData();
         formData.append('user_name', username);
         formData.append('password', password);
+        
+        API.post("login", formData)
+            .then((response => {
+                if (response.status === 201) {
+                    setCurrentUser(response.data)
+                    navigate("/");
+                }
+            }))
+            .catch((response) => {
+                console.log(response)
+            })
 
-        const getUser = async () => {
-            const user = await postFormData("http://127.0.0.1:8000/", "login", formData)
-            
-            if (!(typeof user === 'undefined')) {
-                setCurrentUser(user);
-                navigate("/");
-            }
-            else {
-                setUsername("")
-                setPassword("")
-            }
-        }
-        getUser();
+        setUsername("")
+        setPassword("")
     }
 
     return (
@@ -53,7 +53,7 @@ const Login = () => {
                         <span className="label-text mr-3 text-xl">Password:</span>
                         <input
                             type="password"
-                            placeholder="Input full name"
+                            placeholder="Input password"
                             className="input input-bordered input-accent w-8/12"
                             value={password}
                             onChange={(e) => {

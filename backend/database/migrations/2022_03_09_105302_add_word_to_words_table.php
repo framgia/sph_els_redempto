@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('words', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('category_id');
-            $table->json('choices');
-            $table->string('correct_answer');
-            $table->timestamps();
+        Schema::table('words', function (Blueprint $table) {
+            $table->string('word');
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('words');
+        Schema::table('words', function (Blueprint $table) {
+            //
+        });
     }
 };
