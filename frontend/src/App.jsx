@@ -20,6 +20,7 @@ import CategoryAdd from './views/admin/CategoryAdd';
 import LessonEdit from './views/admin/LessonEdit';
 import WordsEdit from './views/admin/WordsEdit';
 import WordEdit from './views/admin/WordEdit';
+import WordAdd from './views/admin/WordAdd';
 
 function App() {
   const [currentUser, setCurrentUser] = useLocalStorage("user", "");
@@ -51,6 +52,7 @@ function App() {
             <Route path="categories/edit" element={<CategoryEdit />} />
             <Route path="categories/edit/:lessonSlug" element={<LessonEdit />} />
             <Route path="categories/edit/:lessonSlug/words" element={<WordsEdit />} />
+            <Route path="categories/edit/:lessonSlug/words/add" element={<WordAdd />} />
             <Route path="categories/edit/:lessonSlug/words/:wordId" element={<WordEdit />} />
             <Route path="sign-up" element={<SignUp />} />
             <Route path="login" element={<Login />} />

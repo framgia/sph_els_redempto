@@ -1,16 +1,20 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getData } from '../../api/mockApi';
+import axiosInstance from '../../api/api';
 import Divider from '../../components/Divider'
+import { AppContext } from '../../context/AppContext';
 
 const CategoryEdit = () => {
+    const context = React.useContext(AppContext)
+    const [currentUser, setCurrentUser] = context.user
+
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
-        getData("http://localhost:3000/data.json")
-            .then((json) => {
-                setCategoryList(json.categories)
+        axiosInstance.get("categories")
+            .then((response) => {
+                setCategoryList(response.data.categories)
             })
     }, [])
 
@@ -19,6 +23,20 @@ const CategoryEdit = () => {
     const pageButtons = [];
     for (let i = 0; i <= Math.floor((categoryList.length - 1) / itemPerPage); i++) {
         pageButtons.push(<button key={i} className={`btn btn-sm ${pageNo === i ? "btn-active" : ""}`} onClick={() => setPageNo(i)}>{i + 1}</button>)
+    }
+
+    const handleDelete = (event, category) => {
+        axiosInstance.delete(
+            `categories/${category.slug}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${currentUser.token}`,
+                }
+            }
+            )
+        .then(response => {
+            setCategoryList(prevList=>prevList.filter(prevCategory => prevCategory.id !== category.id))
+        })
     }
 
     return (
@@ -48,6 +66,7 @@ const CategoryEdit = () => {
                                                 <td>{category.title}</td>
                                                 <td className="flex justify-end">
                                                     <Link to={`${category.slug}`} className="btn btn-ghost text-blue-600">Edit</Link>
+                                                    <button className="btn btn-ghost text-red-600" onClick={(event) => handleDelete(event, category)}>Del</button>
                                                 </td>
                                             </tr>
                                         )

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { API } from '../api/api';
+import axiosInstance from '../api/api';
 import { AppContext } from '../context/AppContext';
 
 const NavBar = () => {
@@ -9,7 +9,7 @@ const NavBar = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        API.post('logout',
+        axiosInstance.post('logout',
             {},
             {
                 headers: {

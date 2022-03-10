@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { API } from '../../../api/api';
+import axiosInstance from '../../../api/api';
 
 const LessonQuiz = () => {
     const navigate = useNavigate();
@@ -11,9 +11,9 @@ const LessonQuiz = () => {
     const [score, setScore] = useState(0);
 
     useEffect(() => {
-        API.get(`categories/${lessonSlug}/words`)
+        axiosInstance.get(`categories/${lessonSlug}/words`)
             .then(response => {
-                setWordList(response.data)
+                setWordList(response.data.words)
             })
     }, [lessonSlug])
 

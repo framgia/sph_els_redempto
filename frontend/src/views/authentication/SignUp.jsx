@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { API } from '../../api/api'
+import axiosInstance from '../../api/api'
 import { AppContext } from '../../context/AppContext'
 
 const SignUp = () => {
@@ -24,7 +24,7 @@ const SignUp = () => {
         formData.append('password_confirmation', cPassword);
 
         const getUser = () => {
-            API.post("register", formData)
+            axiosInstance.post("register", formData)
                 .then((response) => {
                     setCurrentUser(response.data)
                     navigate("/");

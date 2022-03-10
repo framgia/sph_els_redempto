@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { API } from '../../api/api'
+import axiosInstance from '../../api/api'
 import { AppContext } from '../../context/AppContext'
 
 const Login = () => {
@@ -17,7 +17,7 @@ const Login = () => {
         formData.append('user_name', username);
         formData.append('password', password);
         
-        API.post("login", formData)
+        axiosInstance.post("login", formData)
             .then((response => {
                 if (response.status === 201) {
                     setCurrentUser(response.data)

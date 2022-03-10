@@ -1,16 +1,16 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import axiosInstance from '../../api/api';
+import React, { useEffect } from 'react'
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import axiosInstance from '../../api/api'
 import Divider from '../../components/Divider'
-import { AppContext } from '../../context/AppContext';
+import { AppContext } from '../../context/AppContext'
 
-const WordEdit = () => {
+const WordAdd = () => {
     const context = React.useContext(AppContext)
     const [currentUser, setCurrentUser] = context.user
 
     const navigate = useNavigate();
-    const { lessonSlug, wordId } = useParams()
+    const { lessonSlug } = useParams()
     const [lesson, setLesson] = useState([])
     const [wordInput, setWordInput] = useState("")
     const [answer, setAnswer] = useState("")
@@ -18,19 +18,6 @@ const WordEdit = () => {
     const [choice2, setChoice2] = useState("")
     const [choice3, setChoice3] = useState("")
     const [choice4, setChoice4] = useState("")
-
-    useEffect(() => {
-        axiosInstance.get(`words/${wordId}`)
-            .then(response => {
-                const wordSelected = response.data.word
-                setWordInput(wordSelected.word)
-                setAnswer(wordSelected.correct_answer)
-                setChoice1(wordSelected.choices[0])
-                setChoice2(wordSelected.choices[1])
-                setChoice3(wordSelected.choices[2])
-                setChoice4(wordSelected.choices[3])
-            })
-    }, [lessonSlug, wordId])
 
     useEffect(() => {
         axiosInstance.get(`categories/${lessonSlug}`)
@@ -67,37 +54,37 @@ const WordEdit = () => {
             />
         </div>
 
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        const formData = new FormData()
-
-        formData.append('category_id', lesson.id)
-        formData.append('word', wordInput)
-        formData.append('choices[0]', choice1)
-        formData.append('choices[1]', choice2)
-        formData.append('choices[2]', choice3)
-        formData.append('choices[3]', choice4)
-        formData.append('correct_answer', answer)
-        axiosInstance.post(`words/${wordId}/?_method=PUT`,
-            formData,
-            {
-                headers: {
-                    'Authorization': `Bearer ${currentUser.token}`,
+        const handleSubmit = (event) => {
+            event.preventDefault()
+            const formData = new FormData()
+    
+            formData.append('category_id', lesson.id)
+            formData.append('word', wordInput)
+            formData.append('choices[0]', choice1)
+            formData.append('choices[1]', choice2)
+            formData.append('choices[2]', choice3)
+            formData.append('choices[3]', choice4)
+            formData.append('correct_answer', answer)
+            axiosInstance.post("words",
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${currentUser.token}`,
+                    }
                 }
-            }
-        )
-            .then((response) => {
-                console.log(response.data)
-                navigate(-1)
-            })
-            .catch((error) => console.log(error))
-    }
+            )
+                .then((response) => {
+                    console.log(response.data)
+                    navigate(-1)
+                })
+                .catch((error) => console.log(error))
+        }
 
     return (
         <div className="flex-1 w-fulltext-black item">
             <div className="h-full flex flex-col w-8/12 m-auto text-black p-4">
                 <div className="flex justify-between items-center">
-                    <span className="text-2xl font-bold">Editing Word</span>
+                    <span className="text-2xl font-bold">Adding Word</span>
                     <button className="btn btn-ghost text-blue-600" onClick={() => { navigate(-1) }}>Back</button>
                 </div>
                 <Divider />
@@ -129,4 +116,4 @@ const WordEdit = () => {
     )
 }
 
-export default WordEdit;
+export default WordAdd;

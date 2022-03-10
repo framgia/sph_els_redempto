@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-const API = axios.create({
+const axiosInstance = axios.create({
     baseURL: `${process.env.REACT_APP_SERVER_API}`,
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    }
 });
 
-export { API };
+axiosInstance.defaults.headers.common['Accept'] = 'application/json';
+axiosInstance.defaults.headers.common['Content-Type'] = 'application/json';
+
+// axiosInstance.defaults.headers.put['content-type'] = 'application/x-www-form-urlencoded';
+
+export default axiosInstance;
