@@ -82,4 +82,8 @@ class CategoryController extends Controller
     {
         //
     }
+
+    public function getCategoryBySlug(Category $category) {
+        return $category;
+    }
 }

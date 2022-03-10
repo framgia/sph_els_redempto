@@ -13,4 +13,8 @@ class Category extends Model
         'description',
         'slug',
     ];
+
+    public function words() {
+        return $this->hasMany(Word::class);
+    }
 }

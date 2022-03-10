@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { postFormData } from '../../api/api'
+import { API } from '../../api/api'
 import { AppContext } from '../../context/AppContext'
 
 const SignUp = () => {
@@ -23,10 +23,12 @@ const SignUp = () => {
         formData.append('password', password);
         formData.append('password_confirmation', cPassword);
 
-        const getUser = async() => {
-            const user = await postFormData("http://127.0.0.1:8000/", "register", formData)
-            setCurrentUser(user);
-            navigate("/");
+        const getUser = () => {
+            API.post("register", formData)
+                .then((response) => {
+                    setCurrentUser(response.data)
+                    navigate("/");
+                })
         }
 
         getUser();
@@ -74,7 +76,7 @@ const SignUp = () => {
                         <span className="label-text mr-3 text-xl">Password:</span>
                         <input
                             type="password"
-                            placeholder="Input full name"
+                            placeholder="Input password"
                             className="input input-bordered input-accent w-8/12"
                             value={password}
                             onChange={(e) => {
@@ -85,7 +87,7 @@ const SignUp = () => {
                         <span className="label-text mr-3 text-xl">Confirm Password:</span>
                         <input
                             type="password"
-                            placeholder="Input full name"
+                            placeholder="Confirm password"
                             className="input input-bordered input-accent w-8/12"
                             value={cPassword}
                             onChange={(e) => {
@@ -93,7 +95,7 @@ const SignUp = () => {
                             }} />
                     </label>
                     <div className="w-full flex flex-row justify-end mt-10">
-                        <input type="submit" value="Submit" className="btn btn-lg"/>
+                        <input type="submit" value="Submit" className="btn btn-lg" />
                     </div>
                 </form>
             </div>

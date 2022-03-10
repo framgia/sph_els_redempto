@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { authPostData } from '../api/api';
+import { API } from '../api/api';
 import { AppContext } from '../context/AppContext';
 
 const NavBar = () => {
@@ -9,15 +9,16 @@ const NavBar = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-
-        const logout = async () => {
-            const response = await authPostData('http://127.0.0.1:8000/', 'logout', currentUser.token)
-            console.log(response)
-            setCurrentUser(null)
-            navigate("/")
-        }
-
-        logout()
+        API.post('logout',
+            {},
+            {
+                headers: {
+                    'Authorization': `Bearer ${currentUser.token}`,
+                }
+            })
+            .catch(response => console.log(response))
+        setCurrentUser(null)
+        navigate("/")
     }
 
     return (
@@ -35,7 +36,7 @@ const NavBar = () => {
             </div>
             <div className="navbar-end">
                 {
-                    currentUser === null?
+                    currentUser === null ?
                         <div>
                             <Link to="/sign-up" className="btn-ghost p-5 btn-lg">Sign Up</Link>
                             <Link to="/login" className="btn-ghost p-5 btn-lg">Login</Link>

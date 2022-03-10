@@ -9,6 +9,8 @@ class Word extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'category_id',
+        'word',
         'choices',
         'correct_answer',
     ];
@@ -16,4 +18,8 @@ class Word extends Model
     protected $casts = [
         'choices' => 'array'
     ];
+
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
 }

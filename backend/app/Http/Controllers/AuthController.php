@@ -48,7 +48,7 @@ class AuthController extends Controller
         else {
             return response([
                 'message' => 'Invalid Credentials'
-            ], 401);
+            ], 400);
         }
 
         $token = $user->createToken('admin_token')->plainTextToken;
