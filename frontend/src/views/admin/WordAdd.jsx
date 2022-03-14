@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import axiosInstance from '../../api/api'
+import BASEAPI from '../../api/baseApi'
 import Divider from '../../components/Divider'
-import { AppContext } from '../../context/AppContext'
 
 const WordAdd = () => {
-    const context = React.useContext(AppContext)
-    const [currentUser, setCurrentUser] = context.user
 
     const navigate = useNavigate();
     const { lessonSlug } = useParams()
@@ -20,7 +17,7 @@ const WordAdd = () => {
     const [choice4, setChoice4] = useState("")
 
     useEffect(() => {
-        axiosInstance.get(`categories/${lessonSlug}`)
+        BASEAPI.get(`categories/${lessonSlug}`)
             .then(response => {
                 const data = response.data.category
                 setLesson(data)
@@ -65,16 +62,10 @@ const WordAdd = () => {
             formData.append('choices[2]', choice3)
             formData.append('choices[3]', choice4)
             formData.append('correct_answer', answer)
-            axiosInstance.post("words",
+            BASEAPI.post("words",
                 formData,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${currentUser.token}`,
-                    }
-                }
             )
                 .then((response) => {
-                    console.log(response.data)
                     navigate(-1)
                 })
                 .catch((error) => console.log(error))

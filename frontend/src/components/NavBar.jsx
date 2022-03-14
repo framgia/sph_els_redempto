@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axiosInstance from '../api/api';
-import { AppContext } from '../context/AppContext';
+import BASEAPI from '../api/baseApi'
+import { AppContext } from '../context/AppContext'
+import Cookies from 'js-cookie'
 
 const NavBar = () => {
     const context = React.useContext(AppContext);
@@ -9,16 +10,15 @@ const NavBar = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        axiosInstance.post('logout',
-            {},
-            {
-                headers: {
-                    'Authorization': `Bearer ${currentUser.token}`,
-                }
-            })
-            .catch(response => console.log(response))
-        setCurrentUser(null)
-        navigate("/")
+
+        BASEAPI.post('logout', {})
+        .then((response)=>{
+            Cookies.remove('user')
+            Cookies.remove('token')
+            setCurrentUser(null)
+            navigate("/")
+        })
+        .catch((error)=>console.log(error.response))
     }
 
     return (

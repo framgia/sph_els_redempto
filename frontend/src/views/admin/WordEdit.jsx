@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axiosInstance from '../../api/api';
+import BASEAPI from '../../api/baseApi';
 import Divider from '../../components/Divider'
 import { AppContext } from '../../context/AppContext';
 
@@ -20,7 +20,7 @@ const WordEdit = () => {
     const [choice4, setChoice4] = useState("")
 
     useEffect(() => {
-        axiosInstance.get(`words/${wordId}`)
+        BASEAPI.get(`words/${wordId}`)
             .then(response => {
                 const wordSelected = response.data.word
                 setWordInput(wordSelected.word)
@@ -33,7 +33,7 @@ const WordEdit = () => {
     }, [lessonSlug, wordId])
 
     useEffect(() => {
-        axiosInstance.get(`categories/${lessonSlug}`)
+        BASEAPI.get(`categories/${lessonSlug}`)
             .then(response => {
                 const data = response.data.category
                 setLesson(data)
@@ -78,7 +78,7 @@ const WordEdit = () => {
         formData.append('choices[2]', choice3)
         formData.append('choices[3]', choice4)
         formData.append('correct_answer', answer)
-        axiosInstance.post(`words/${wordId}/?_method=PUT`,
+        BASEAPI.post(`words/${wordId}/?_method=PUT`,
             formData,
             {
                 headers: {

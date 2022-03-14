@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import axiosInstance from '../../api/api';
+import BASEAPI from '../../api/baseApi';
 import { Link } from 'react-router-dom';
 import Divider from '../../components/Divider';
 import CategoryItem from './widgets/CategoryItem';
@@ -12,7 +12,7 @@ const Categories = () => {
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
-        axiosInstance.get("categories")
+        BASEAPI.get("categories")
             .then((response) => {
                 setCategoryList(response.data.categories)
             })

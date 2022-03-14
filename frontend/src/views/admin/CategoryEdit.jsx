@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axiosInstance from '../../api/api';
+import BASEAPI from '../../api/baseApi';
 import Divider from '../../components/Divider'
 import { AppContext } from '../../context/AppContext';
 
@@ -12,7 +12,7 @@ const CategoryEdit = () => {
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
-        axiosInstance.get("categories")
+        BASEAPI.get("categories")
             .then((response) => {
                 setCategoryList(response.data.categories)
             })
@@ -26,7 +26,7 @@ const CategoryEdit = () => {
     }
 
     const handleDelete = (event, category) => {
-        axiosInstance.delete(
+        BASEAPI.delete(
             `categories/${category.slug}`,
             {
                 headers: {

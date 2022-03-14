@@ -1,27 +1,23 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import axiosInstance from '../../api/api';
+import BASEAPI from '../../api/baseApi';
 import Divider from '../../components/Divider';
-import { AppContext } from '../../context/AppContext';
 
 const WordsEdit = () => {
-    const context = React.useContext(AppContext)
-    const [currentUser, setCurrentUser] = context.user
 
     const { lessonSlug } = useParams()
     const [lesson, setLesson] = useState([])
     const [words, setWords] = useState([])
 
     useEffect(() => {
-        axiosInstance.get(`categories/${lessonSlug}`)
+        BASEAPI.get(`categories/${lessonSlug}`)
             .then(response => {
                 setLesson(response.data.category)
             })
 
-        axiosInstance.get(`categories/${lessonSlug}/words`)
+        BASEAPI.get(`categories/${lessonSlug}/words`)
             .then(response => {
-                console.log(response.data.words)
                 setWords(response.data.words)
             })
     }, [lessonSlug])
@@ -34,14 +30,7 @@ const WordsEdit = () => {
     }
 
     const handleDelete = (event, word) => {
-        axiosInstance.delete(
-            `words/${word.id}`,
-            {
-                headers: {
-                    'Authorization': `Bearer ${currentUser.token}`,
-                }
-            }
-            )
+        BASEAPI.delete(`words/${word.id}`,)
         .then(response => {
             setWords(prevList=>prevList.filter(prevWord => prevWord.id !== word.id))
         })

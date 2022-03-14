@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axiosInstance from '../../api/api'
+import BASEAPI from '../../api/baseApi'
 import Divider from '../../components/Divider'
 import { AppContext } from '../../context/AppContext'
 
@@ -21,16 +21,8 @@ const CategoryAdd = () => {
         formData.append('title', lessonTitle)
         formData.append('slug', lessonSlug)
         formData.append('description', lessonDescription)
-        axiosInstance.post("categories",
-            formData,
-            {
-                headers: {
-                    'Authorization': `Bearer ${currentUser.token}`,
-                }
-            }
-        )
+        BASEAPI.post("categories",formData,)
             .then((response) => {
-                console.log(response.data)
                 navigate(-1)
             })
             .catch((error) => console.log(error))

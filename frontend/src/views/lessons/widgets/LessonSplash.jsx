@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import axiosInstance from '../../../api/api'
+import BASEAPI from '../../../api/baseApi'
 
 const LessonSplash = () => {
     const { lessonSlug } = useParams()
     const [words, setWords] = useState(null);
 
     useEffect(() => {
-        axiosInstance.get(`categories/${lessonSlug}/words`)
+        BASEAPI.get(`categories/${lessonSlug}/words`)
             .then(response => {
                 setWords(response.data.words)
             })

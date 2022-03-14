@@ -15,7 +15,8 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return response([
+
+        return response()->json([
             'categories' => $categories,
         ], 201);
     }
@@ -27,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return response([
+        return response()->json([
             'message' => 'Nothing here yet'
         ], 404);
     }
@@ -46,13 +47,13 @@ class CategoryController extends Controller
             'slug' => ['required', 'string', 'unique:categories,slug'],
         ]);
 
-        $category = Category::create($request->all());
+        $category = Category::create($request->except('_token'));
         $response = [
             'message' => 'Category Created',
             'category' => $category,
         ];
 
-        return response($response, 201);
+        return response()->json($response, 201);
     }
 
     /**
@@ -88,7 +89,7 @@ class CategoryController extends Controller
     {
         $category->update($request->all());
 
-        return response([
+        return response()->json([
             'category' => $category,
         ], 201);
     }
@@ -103,14 +104,14 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return response([
+        return response()->json([
             'message' => 'Category Deleted',
         ], 201);
     }
 
     public function showCategoryBySlug(Category $category)
     {
-        return response([
+        return response()->json([
             'category' => $category,
         ], 201);
     }
@@ -118,7 +119,7 @@ class CategoryController extends Controller
     {
         $category->update($request->all());
 
-        return response([
+        return response()->json([
             'category' => $category,
         ], 201);
     }
@@ -126,7 +127,7 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return response([
+        return response()->json([
             'message' => 'Category Deleted',
         ], 201);
     }

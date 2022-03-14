@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import axiosInstance from '../../api/api';
+import BASEAPI from '../../api/baseApi';
 import Divider from '../../components/Divider'
 import { AppContext } from '../../context/AppContext'
 
@@ -17,7 +17,7 @@ const LessonEdit = () => {
 
     const { lessonSlug } = useParams()
     useEffect(() => {
-        axiosInstance.get(`categories/${lessonSlug}`)
+        BASEAPI.get(`categories/${lessonSlug}`)
             .then(response => {
                 const data = response.data.category
                 setLesson(data)
@@ -34,7 +34,7 @@ const LessonEdit = () => {
         formData.append('title', lessonTitle)
         formData.append('slug', lessonSlugText)
         formData.append('description', lessonDescription)
-        axiosInstance.post(`categories/${lessonSlug}/?_method=PUT`,
+        BASEAPI.post(`categories/${lessonSlug}/?_method=PUT`,
             formData,
             {
                 headers: {

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axiosInstance from '../../api/api'
+import BASEAPI from '../../api/baseApi'
 import { AppContext } from '../../context/AppContext'
+import Cookies from 'js-cookie'
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -24,9 +25,11 @@ const SignUp = () => {
         formData.append('password_confirmation', cPassword);
 
         const getUser = () => {
-            axiosInstance.post("register", formData)
+            BASEAPI.post("register", formData)
                 .then((response) => {
                     setCurrentUser(response.data)
+                    Cookies.set('user', response.data.user)
+                    Cookies.set('token', response.data.token)
                     navigate("/");
                 })
         }
