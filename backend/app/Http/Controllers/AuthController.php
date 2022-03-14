@@ -32,7 +32,7 @@ class AuthController extends Controller
             'token' => $token,
         ];
 
-        return response($response, 201);
+        return response()->json($response, 201);
     }
 
     public function login(Request $request)
@@ -46,7 +46,7 @@ class AuthController extends Controller
             $user = User::where('user_name', $fields['user_name'])->first();
         }
         else {
-            return response([
+            return response()->json([
                 'message' => 'Invalid Credentials'
             ], 400);
         }
@@ -58,14 +58,14 @@ class AuthController extends Controller
             'token' => $token,
         ];
 
-        return response($response, 201);
+        return response()->json($response, 201);
     }
 
     public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();
 
-        return response([
+        return response()->json([
             'message' => 'Logged out'
         ], 201);
     }

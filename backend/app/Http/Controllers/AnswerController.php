@@ -12,7 +12,7 @@ class AnswerController extends Controller
     {
         $answers = Answer::all();
 
-        return response([
+        return response()->json([
             "answers" => $answers,
         ], 201);
     }
@@ -28,7 +28,7 @@ class AnswerController extends Controller
 
         $answer = Answer::create($request->all());
 
-        return response([
+        return response()->json([
             'answer' => $answer,
         ], 201);
     }
@@ -37,7 +37,7 @@ class AnswerController extends Controller
     {
         $answer->delete();
 
-        return response([
+        return response()->json([
             'message' => 'Answer Deleted',
         ], 201);
     }
@@ -45,7 +45,7 @@ class AnswerController extends Controller
     {
         $answers = $attempt->answers;
 
-        return response([
+        return response()->json([
             "answers" => $answers,
         ], 201);
     }
@@ -54,7 +54,7 @@ class AnswerController extends Controller
     {
         $category = $answer->word->category;
 
-        return response([
+        return response()->json([
             "category" => $category,
         ], 201);
     }
@@ -66,13 +66,13 @@ class AnswerController extends Controller
         foreach ($answers as $answer) {
             $word = $answer->word;
             if ($word->id == $wordId) {
-                return response([
+                return response()->json([
                     "answer" => $answer,
                 ], 201);
             }
         }
 
-        return response([
+        return response()->json([
             "message" => "No answer for this word yet",
         ], 401);
     }

@@ -29,4 +29,4 @@ function LessonItem({ currWord, setScore, currNo, setCurrNo, setAnswers }) {
     )
 }
 
-export default LessonItem
+export default LessonItem;

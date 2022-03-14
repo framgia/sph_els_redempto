@@ -15,14 +15,14 @@ class AttemptController extends Controller
     {
         $attempts = Attempt::all();
 
-        return response([
+        return response()->json([
             'attempts' => $attempts,
         ], 201);
     }
 
     public function show(Attempt $attempt)
     {
-        return response([
+        return response()->json([
             'attempt' => $attempt,
         ], 201);
     }
@@ -41,8 +41,8 @@ class AttemptController extends Controller
         $attempt = Attempt::create([
             'user_id' => $request->user_id,
             'category_id' => $request->category_id,
+            'date_finished' => Carbon::now(),
             'score' => $request->score,
-            'date_started' => Carbon::now(),
         ]);
 
         $index = 0;
@@ -56,7 +56,7 @@ class AttemptController extends Controller
             ]);
         }
 
-        return response([
+        return response()->json([
             'attempt' => $attempt,
             'word_ids' => $request->word_ids,
             'question_nos' => $request->question_nos,
@@ -72,7 +72,7 @@ class AttemptController extends Controller
     {
         $attempt->delete();
 
-        return response([
+        return response()->json([
             'message' => 'Attempt Deleted',
         ], 201);
     }
@@ -81,7 +81,7 @@ class AttemptController extends Controller
     {
         $attempts = $user->attempts;
 
-        return response([
+        return response()->json([
             'attempts' => $attempts,
         ], 201);
     }
@@ -89,7 +89,7 @@ class AttemptController extends Controller
     {
         $word = $category->words->first();
         if ($word == null) {
-            return response([
+            return response()->json([
                 'message' => "No words in category",
             ], 401);
         }
@@ -97,12 +97,12 @@ class AttemptController extends Controller
         $answers = $word->answers;
 
         if ($answers == null) {
-            return response([
+            return response()->json([
                 'message' => "No attempts found",
             ], 401);
         }
         else if (count($answers) == 0) {
-            return response([
+            return response()->json([
                 'message' => "No attempts for this category",
             ], 401);
         }
@@ -115,12 +115,12 @@ class AttemptController extends Controller
                 continue;
             }
 
-            return response([
+            return response()->json([
                 'attempt' => $attempt,
             ], 201);
         }
 
-        return response([
+        return response()->json([
             'message' => 'No attempts in this category',
         ], 401);
     }

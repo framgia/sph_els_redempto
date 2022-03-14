@@ -15,8 +15,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('attempts', function (Blueprint $table) {
-            DB::statement("ALTER TABLE `attempts` MODIFY `date_started` TIMESTAMP NULL");
-            DB::statement("ALTER TABLE `attempts` MODIFY `date_finished` TIMESTAMP NULL");
+            $table->dropColumn('date_started');
         });
     }
 
@@ -28,8 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('attempts', function (Blueprint $table) {
-            DB::statement("ALTER TABLE `attempts` MODIFY `date_started` TIMESTAMP NOT NULL");
-            DB::statement("ALTER TABLE `attempts` MODIFY `date_finished` TIMESTAMP NOT NULL");
+            $table->timestamp('date_started');
         });
     }
 };

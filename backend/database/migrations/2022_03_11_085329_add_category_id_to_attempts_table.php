@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('attempts', function (Blueprint $table) {
-            $table->foreignId('category_id');
+            $table->foreignId('category_id')->constrained();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('attempts', function (Blueprint $table) {
-            $table->dropForeign('category_id');
+            $table->dropForeign(['category_id']);
         });
     }
 };

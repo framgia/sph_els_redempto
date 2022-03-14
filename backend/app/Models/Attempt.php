@@ -12,17 +12,15 @@ class Attempt extends Model
     protected $fillable = [
         'user_id',
         'category_id',
-        'date_started',
+        'date_finished',
         'score',
     ];
 
     protected $attributes = [
-        'date_finished' => null,
         'score' => 0,
     ];
 
     protected $dates = [
-        'date_started',
         'date_finished',
     ];
 

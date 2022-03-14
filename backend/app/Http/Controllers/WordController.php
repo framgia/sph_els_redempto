@@ -12,7 +12,7 @@ class WordController extends Controller
     public function index()
     {
         $words = Word::all();
-        return response([
+        return response()->json([
             'words' => $words,
         ], 201);
     }
@@ -31,21 +31,21 @@ class WordController extends Controller
             'category' => $word,
         ];
 
-        return response($response, 201);
+        return response()->json($response, 201);
     }
 
     public function update(Request $request, Word $word)
     {
         $word->update($request->except('_token'));
 
-        return response([
+        return response()->json([
             'word' => $word,
         ], 201);
     }
 
     public function show(Word $word)
     {
-        return response([
+        return response()->json([
             'word' => $word,
         ], 201);
     }
@@ -53,14 +53,14 @@ class WordController extends Controller
     public function destroy(Word $word) {
         $word->delete();
 
-        return response([
+        return response()->json([
             'message' => 'Word Deleted',
         ], 201);
     }
 
     public function getWordBySlug(Category $category, Word $word)
     {
-        return response([
+        return response()->json([
             'word' => $word,
             'category' => $category
         ], 201);
@@ -68,7 +68,7 @@ class WordController extends Controller
 
     public function getWordsBySlug(Category $category)
     {
-        return response([
+        return response()->json([
             'words' => $category->words,
             'category' => $category
         ], 201);
