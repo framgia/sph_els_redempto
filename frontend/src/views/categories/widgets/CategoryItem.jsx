@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie'
 
 const CategoryItem = ({ id = 0, slug = "placeholder-slug", title = "Category Name", description = "" }) => {
     return (
@@ -8,7 +9,12 @@ const CategoryItem = ({ id = 0, slug = "placeholder-slug", title = "Category Nam
                 <span className="card-title"> {title} </span>
                 <p className="mt-3"> {description}</p>
                 <div className="justify-end card-actions">
-                    <Link to= {`/lesson/${slug}`} className="btn">Start</Link>
+                    {
+                        Cookies.get('user') ?
+                            <Link to={`/lesson/${slug}/quiz`} className="btn">Start</Link> :
+                            <></>
+                    }
+
                 </div>
             </div>
         </div>

@@ -17,4 +17,8 @@ class Category extends Model
     public function words() {
         return $this->hasMany(Word::class);
     }
+
+    public function attempts() {
+        return $this->hasMany(Cateogry::class);
+    }
 }

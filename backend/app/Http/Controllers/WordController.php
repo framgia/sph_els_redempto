@@ -25,7 +25,7 @@ class WordController extends Controller
             'correct_answer' => ['required', 'string'],
         ]);
 
-        $word = Word::create($request->all());
+        $word = Word::create($request->except('_token'));
         $response = [
             'message' => 'Word Created',
             'category' => $word,
@@ -36,7 +36,7 @@ class WordController extends Controller
 
     public function update(Request $request, Word $word)
     {
-        $word->update($request->all());
+        $word->update($request->except('_token'));
 
         return response([
             'word' => $word,
@@ -62,6 +62,7 @@ class WordController extends Controller
     {
         return response([
             'word' => $word,
+            'category' => $category
         ], 201);
     }
 
@@ -69,6 +70,7 @@ class WordController extends Controller
     {
         return response([
             'words' => $category->words,
+            'category' => $category
         ], 201);
     }
 }

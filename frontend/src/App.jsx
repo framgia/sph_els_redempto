@@ -10,9 +10,7 @@ import WordsLearned from './components/WordsLearned';
 import Categories from './views/categories/Categories';
 import Profile from './views/profile/Profile';
 import Lessons from './views/lessons/Lessons';
-import LessonSplash from './views/lessons/widgets/LessonSplash';
 import LessonQuiz from './views/lessons/widgets/LessonQuiz';
-import LessonReview from './views/lessons/widgets/LessonReview';
 import SignUp from './views/authentication/SignUp';
 import Login from './views/authentication/Login';
 import CategoryEdit from './views/admin/CategoryEdit';
@@ -38,8 +36,6 @@ function App() {
             </Route>
             <Route path="categories" element={<Categories />} />
             <Route path="lesson" element={<Lessons />}>
-              <Route path=":lessonSlug" element={<LessonSplash />} />
-              <Route path=":lessonSlug/review" element={<LessonReview />} />
               <Route path=":lessonSlug/quiz" element={<LessonQuiz />} />
             </Route>
             <Route path="users/:id" element={<Profile />}>

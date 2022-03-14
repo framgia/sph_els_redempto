@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WordController;
+use App\Http\Controllers\AttemptController;
+use App\Http\Controllers\AnswerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +28,17 @@ Route::get('/categories/{category:slug}/words', [WordController::class, 'getWord
 Route::get('/words', [WordController::class, 'index']);
 Route::get('/words/{word}', [WordController::class, 'show']);
 
+Route::get('/attempts', [AttemptController::class, 'index']);
+Route::get('/attempts/{attempt}', [AttemptController::class, 'show']);
+Route::get('/attempts/{attempt}/answers', [AnswerController::class, 'getAnswersByAttempt']);
+Route::get('/attempts/{attempt}/answers/{wordId}', [AnswerController::class, 'getAnswerByAttemptAndWord']);
+
+Route::get('/answers', [AnswerController::class, 'index']);
+Route::get('/answers/{answer}/category', [AnswerController::class, 'getCategory']);
+
+Route::get('/users/{user}/attempts', [AttemptController::class, 'getAttemptsByUser']);
+Route::get('/users/{userId}/attempts/{category:slug}', [AttemptController::class, 'getAttemptBySlugAndId']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -39,5 +52,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/words/{word}', [WordController::class, 'update']);
     Route::delete('/words/{word}', [WordController::class, 'destroy']);
 
+    Route::post('/attempts', [AttemptController::class, 'store']);
+    Route::put('/attempts/{attempt}', [AttemptController::class, 'store']);
+    Route::delete('/attempts/{attempt}', [AttemptController::class, 'destroy']);
+
+    Route::post('/answers', [AnswerController::class, 'store']);
+    Route::delete('/answers/{answer}', [AnswerController::class, 'destroy']);
+    
     Route::post('/logout', [AuthController::class, 'logout']);
 });

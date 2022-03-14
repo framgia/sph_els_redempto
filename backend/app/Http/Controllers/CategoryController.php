@@ -87,7 +87,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $category->update($request->all());
+        $category->update($request->except('_token'));
 
         return response()->json([
             'category' => $category,
@@ -117,7 +117,7 @@ class CategoryController extends Controller
     }
     public function updateCategoryBySlug(Request $request, Category $category)
     {
-        $category->update($request->all());
+        $category->update($request->except('_token'));
 
         return response()->json([
             'category' => $category,

@@ -22,7 +22,7 @@ const Login = () => {
             .then((response => {
                 if (response.status === 201) {
                     setCurrentUser(response.data)
-                    Cookies.set('user', response.data.user)
+                    Cookies.set('user', JSON.stringify(response.data.user))
                     Cookies.set('token', response.data.token)
                     navigate("/");
                 }
@@ -34,6 +34,7 @@ const Login = () => {
         setUsername("")
         setPassword("")
     }
+
 
     return (
         <div className="text-black flex flex-1">
