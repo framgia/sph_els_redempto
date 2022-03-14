@@ -1,13 +1,31 @@
 import React from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import BASEAPI from '../../api/baseApi'
 import Divider from '../../components/Divider'
+import { AppContext } from '../../context/AppContext'
 
 const CategoryAdd = () => {
-    const [lessonTitle, setLessonTitle] = useState("")
-    const [lessonBody, setLessonBody] = useState("")
+    const context = React.useContext(AppContext)
+    const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        alert("Added Category!") 
+    const [currentUser, setCurrentUser] = context.user
+    const [lessonTitle, setLessonTitle] = useState("")
+    const [lessonSlug, setLessonSlug] = useState("")
+    const [lessonDescription, setLessonDescription] = useState("")
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const formData = new FormData()
+
+        formData.append('title', lessonTitle)
+        formData.append('slug', lessonSlug)
+        formData.append('description', lessonDescription)
+        BASEAPI.post("categories",formData,)
+            .then((response) => {
+                navigate(-1)
+            })
+            .catch((error) => console.log(error))
     }
 
     return (
@@ -17,7 +35,7 @@ const CategoryAdd = () => {
                     <span className="text-2xl font-bold">Add Category</span>
                 </div>
                 <Divider />
-                <form className="form-control flex-1 p-3" onSubmit={() => { handleSubmit() }}>
+                <form className="form-control flex-1 p-3" onSubmit={handleSubmit}>
                     <label className="label">
                         <span className="label-text text-black text-xl font-bold">Title</span>
                     </label>
@@ -30,15 +48,27 @@ const CategoryAdd = () => {
                             setLessonTitle(e.target.value)
 
                         }} />
+                    <label className="label">
+                        <span className="label-text text-black text-xl font-bold">Slug</span>
+                    </label>
+                    <input
+                        type="text"
+                        className="input input-bordered text-white"
+                        placeholder="Add Slug"
+                        value={lessonSlug}
+                        onChange={(e) => {
+                            setLessonSlug(e.target.value)
+
+                        }} />
                     <label className="label mt-3">
                         <span className="label-text text-black text-xl font-bold">Body</span>
                     </label>
                     <textarea
                         className="textarea no-scrollbar h-full max-h-full text-white resize-none"
                         placeholder="Add Body"
-                        value={lessonBody}
+                        value={lessonDescription}
                         onChange={(e) => {
-                            setLessonBody(e.target.value)
+                            setLessonDescription(e.target.value)
                         }}>
                     </textarea>
                     <div className="flex justify-end mt-4">

@@ -20,13 +20,24 @@ use App\Http\Controllers\WordController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/categories/{category:slug}', [CategoryController::class, 'getCategoryBySlug']);
+Route::get('/categories/{category:slug}', [CategoryController::class, 'showCategoryBySlug']);
 Route::get('/categories/{category:slug}/words', [WordController::class, 'getWordsBySlug']);
+
+Route::get('/words', [WordController::class, 'index']);
+Route::get('/words/{word}', [WordController::class, 'show']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category:slug}', [CategoryController::class, 'updateCategoryBySlug']);
+    Route::delete('categories/{category:slug}', [CategoryController::class, 'destroyCategoryBySlug']);
+
+    Route::post('/words', [WordController::class, 'store']);
+    Route::put('/words/{word}', [WordController::class, 'update']);
+    Route::delete('/words/{word}', [WordController::class, 'destroy']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });

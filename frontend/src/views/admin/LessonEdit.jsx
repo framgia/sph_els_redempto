@@ -1,27 +1,51 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { getData } from '../../api/mockApi';
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import BASEAPI from '../../api/baseApi';
 import Divider from '../../components/Divider'
+import { AppContext } from '../../context/AppContext'
 
 const LessonEdit = () => {
+    const context = React.useContext(AppContext)
+    const navigate = useNavigate();
+    
+    const [currentUser, setCurrentUser] = context.user
     const [lesson, setLesson] = useState([])
     const [lessonTitle, setLessonTitle] = useState("")
-    const [lessonBody, setLessonBody] = useState("")
+    const [lessonSlugText, setLessonSlugText] = useState("")
+    const [lessonDescription, setLessonDescription] = useState("")
 
     const { lessonSlug } = useParams()
     useEffect(() => {
-        getData("http://localhost:3000/data.json")
-            .then(json => {
-                const x = json.categories.find(category => category.slug === lessonSlug)
-                setLesson(x)
-                setLessonTitle(x.title)
-                setLessonBody(x.body)
+        BASEAPI.get(`categories/${lessonSlug}`)
+            .then(response => {
+                const data = response.data.category
+                setLesson(data)
+                setLessonTitle(data.title)
+                setLessonSlugText(data.slug)
+                setLessonDescription(data.description)
             })
     }, [lessonSlug])
 
-    const handleSubmit = () => {
-        alert("Edited Category!") 
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const formData = new FormData()
+
+        formData.append('title', lessonTitle)
+        formData.append('slug', lessonSlugText)
+        formData.append('description', lessonDescription)
+        BASEAPI.post(`categories/${lessonSlug}/?_method=PUT`,
+            formData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${currentUser.token}`,
+                }
+            }
+        )
+            .then((response) => {
+                navigate(-1)
+            })
+            .catch((error) => console.log(error))
     }
 
     return (
@@ -32,7 +56,7 @@ const LessonEdit = () => {
                     <Link to="words" className="btn btn-ghost text-blue-600">Edit words</Link>
                 </div>
                 <Divider />
-                <form className="form-control flex-1 p-3" onSubmit={() => {handleSubmit()}}>
+                <form className="form-control flex-1 p-3" onSubmit={handleSubmit}>
                     <label className="label">
                         <span className="label-text text-black text-xl font-bold">Title</span>
                     </label>
@@ -44,14 +68,25 @@ const LessonEdit = () => {
                             setLessonTitle(e.target.value)
 
                         }} />
+                    <label className="label">
+                        <span className="label-text text-black text-xl font-bold">Slug</span>
+                    </label>
+                    <input
+                        type="text"
+                        className="input input-bordered text-white"
+                        value={lessonSlugText}
+                        onChange={(e) => {
+                            setLessonSlugText(e.target.value)
+
+                        }} />
                     <label className="label mt-3">
                         <span className="label-text text-black text-xl font-bold">Body</span>
                     </label>
                     <textarea
                         className="textarea no-scrollbar h-full max-h-full text-white resize-none"
-                        value={lessonBody}
+                        value={lessonDescription}
                         onChange={(e) => {
-                            setLessonBody(e.target.value)
+                            setLessonDescription(e.target.value)
                         }}>
                     </textarea>
                     <div className="flex justify-end mt-4">

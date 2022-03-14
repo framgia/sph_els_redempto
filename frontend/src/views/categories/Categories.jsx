@@ -1,11 +1,10 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { API } from '../../api/api';
+import BASEAPI from '../../api/baseApi';
 import { Link } from 'react-router-dom';
 import Divider from '../../components/Divider';
 import CategoryItem from './widgets/CategoryItem';
 import { AppContext } from '../../context/AppContext';
-import axios from 'axios';
 
 const Categories = () => {
     const context = React.useContext(AppContext);
@@ -13,9 +12,9 @@ const Categories = () => {
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
-        API.get("categories")
+        BASEAPI.get("categories")
             .then((response) => {
-                setCategoryList(response.data)
+                setCategoryList(response.data.categories)
             })
     }, [])
 

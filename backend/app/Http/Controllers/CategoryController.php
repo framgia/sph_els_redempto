@@ -14,7 +14,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        $categories = Category::all();
+
+        return response()->json([
+            'categories' => $categories,
+        ], 201);
     }
 
     /**
@@ -24,7 +28,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return response()->json([
+            'message' => 'Nothing here yet'
+        ], 404);
     }
 
     /**
@@ -35,7 +41,19 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string'],
+            'description' => ['string'],
+            'slug' => ['required', 'string', 'unique:categories,slug'],
+        ]);
+
+        $category = Category::create($request->except('_token'));
+        $response = [
+            'message' => 'Category Created',
+            'category' => $category,
+        ];
+
+        return response()->json($response, 201);
     }
 
     /**
@@ -44,9 +62,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+    //
     }
 
     /**
@@ -57,7 +75,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+    //
     }
 
     /**
@@ -67,9 +85,13 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $category->update($request->all());
+
+        return response()->json([
+            'category' => $category,
+        ], 201);
     }
 
     /**
@@ -78,12 +100,35 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return response()->json([
+            'message' => 'Category Deleted',
+        ], 201);
     }
 
-    public function getCategoryBySlug(Category $category) {
-        return $category;
+    public function showCategoryBySlug(Category $category)
+    {
+        return response()->json([
+            'category' => $category,
+        ], 201);
+    }
+    public function updateCategoryBySlug(Request $request, Category $category)
+    {
+        $category->update($request->all());
+
+        return response()->json([
+            'category' => $category,
+        ], 201);
+    }
+    public function destroyCategoryBySlug(Category $category)
+    {
+        $category->delete();
+
+        return response()->json([
+            'message' => 'Category Deleted',
+        ], 201);
     }
 }
