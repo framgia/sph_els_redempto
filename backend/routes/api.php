@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\AttemptController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category:slug}', [CategoryController::class, 'showCategoryBySlug']);
 Route::get('/categories/{category:slug}/words', [WordController::class, 'getWordsBySlug']);
+
+Route::get('/users/{user}', [UserController::class, 'show']);
 
 Route::get('/words', [WordController::class, 'index']);
 Route::get('/words/{word}', [WordController::class, 'show']);
@@ -59,5 +63,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/answers', [AnswerController::class, 'store']);
     Route::delete('/answers/{answer}', [AnswerController::class, 'destroy']);
     
+    Route::post('followers', [FollowerController::class, 'store']);
+    Route::delete('followers/{userId}/{followingId}', [FollowerController::class, 'destroy']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
