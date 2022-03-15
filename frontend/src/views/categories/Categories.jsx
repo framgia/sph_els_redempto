@@ -4,12 +4,16 @@ import BASEAPI from '../../api/baseApi';
 import { Link } from 'react-router-dom';
 import Divider from '../../components/Divider';
 import CategoryItem from './widgets/CategoryItem';
-import { AppContext } from '../../context/AppContext';
+import Cookies from 'js-cookie'
 
 const Categories = () => {
-    const context = React.useContext(AppContext);
-    const [currentUser, setCurrentUser] = context.user;
     const [categoryList, setCategoryList] = useState([]);
+
+    let currentUser = null;
+    const cookie = Cookies.get('user')
+    if (typeof cookie != 'undefined') {
+        currentUser = JSON.parse(cookie);
+    }
 
     useEffect(() => {
         BASEAPI.get("categories")
@@ -23,7 +27,7 @@ const Categories = () => {
             <div className="w-full flex flex-row justify-between items-center">
                 <span className="text-2xl font-bold">Categories</span>
                 {
-                    (currentUser != null && currentUser.user.is_admin) ?
+                    (currentUser != null && currentUser.is_admin) ?
 
                         <Link to="edit" className="btn btn-ghost text-info">Edit</Link> :
                         <></>

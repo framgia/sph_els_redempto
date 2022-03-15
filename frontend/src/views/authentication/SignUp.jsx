@@ -28,7 +28,7 @@ const SignUp = () => {
             BASEAPI.post("register", formData)
                 .then((response) => {
                     setCurrentUser(response.data)
-                    Cookies.set('user', response.data.user)
+                    Cookies.set('user', JSON.stringify(response.data.user))
                     Cookies.set('token', response.data.token)
                     navigate("/");
                 })
