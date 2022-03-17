@@ -39,7 +39,7 @@ Route::get('/answers', [AnswerController::class, 'index']);
 Route::get('/answers/{answer}/category', [AnswerController::class, 'getCategory']);
 
 Route::get('/users/{userId}', [UserController::class, 'show']);
-Route::get('/users/{user}/attempts', [AttemptController::class, 'getAttemptsByUser']);
+Route::get('/users/{userId}/attempts', [AttemptController::class, 'getAttemptsByUser']);
 Route::get('/users/{userId}/attempts/{category:slug}', [AttemptController::class, 'getAttemptBySlugAndId']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

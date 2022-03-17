@@ -1,11 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import Avatar from './Avatar';
 import { Link } from 'react-router-dom';
 import DateHelper from '../helper/DateHelper';
 
 function ActivityItem({ attempt }) {
-    useEffect(() => {
-    }, [])
     return (
         <div className="bg-blue-100 rounded-xl p-3 mb-2">
             <Avatar />

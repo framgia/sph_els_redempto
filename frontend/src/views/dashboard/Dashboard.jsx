@@ -1,21 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import Activities from '../../components/Activities';
-import WordsLearned from '../../components/WordsLearned';
 import Avatar from '../../components/Avatar';
 import Divider from '../../components/Divider';
 import Cookies from 'js-cookie'
-
-const display = (view, user) => {
-    switch (view) {
-        case 'activity':
-            return <Activities user={user} showAll={true}/>
-        case 'history':
-            return <WordsLearned />
-        default:
-            return <></>
-    }
-}
+import useUserActivityView from '../../hooks/useUserActivityView';
 
 const Dashboard = ({ view = "" }) => {
     const cookieString = Cookies.get('user')
@@ -23,6 +11,8 @@ const Dashboard = ({ view = "" }) => {
     if (typeof cookieString != 'undefined') {
         user = JSON.parse(cookieString)
     }
+
+    const display = useUserActivityView(view, user, true)
 
     return (
         <div className="text-black flex-1 w-10/12 m-auto">
@@ -45,7 +35,7 @@ const Dashboard = ({ view = "" }) => {
                                 </div>
                             </div>
                         </div>
-                        {display(view, user)}
+                        {display}
                     </> :
                     <div className="inline-block align-top w-4/12 p-10"></div>
             }

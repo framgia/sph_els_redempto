@@ -7,6 +7,7 @@ import WordsLearned from '../../components/WordsLearned';
 import Divider from '../../components/Divider';
 import UserService from '../../api/userService';
 import Cookies from 'js-cookie'
+import useUserActivityView from '../../hooks/useUserActivityView';
 
 const Profile = ({view = ""}) => {
     const { id } = useParams();
@@ -21,6 +22,7 @@ const Profile = ({view = ""}) => {
     const [isDisabled, setIsDisabled] = useState(true);
     const [user, setUser] = useState(null)
 
+    const display = useUserActivityView(view, user);
 
     const handleFollow = () => {
         setIsDisabled(true)
@@ -59,17 +61,6 @@ const Profile = ({view = ""}) => {
                 setIsDisabled(false)
             });
     }, [id])
-
-    const display = (view, user) => {
-        switch (view) {
-            case 'activity':
-                return <Activities user={user} />
-            case 'history':
-                return <WordsLearned />
-            default:
-                return <></>
-        }
-    }
 
     return (
         <div className="text-black flex-1 w-10/12 m-auto">
@@ -118,7 +109,7 @@ const Profile = ({view = ""}) => {
                 }
 
                         </div>
-                        {display(view, user)}
+                        {display}
                     </div>
                     )
 }

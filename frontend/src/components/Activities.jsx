@@ -7,19 +7,19 @@ const Activities = ({ user = null, showAll = false }) => {
   const [userActivity, setUserActivity] = useState([]);
 
   useEffect(() => {
-    if (user != null) {
-      if (!showAll) {
-        UserService.getUserActivity(user.id)
-          .then(response => {
-            setUserActivity(response.data.attempts)
-          })
-      }
-      else {
-        UserService.getAllAttempts()
-          .then(response => {
-            setUserActivity(response.data.attempts)
-          })
-      }
+    if (user == null) return
+    if (!showAll) {
+      UserService.getUserActivity(user.id)
+        .then(response => {
+          setUserActivity(response.data.attempts)
+        })
+    }
+    else {
+      UserService.getAllAttempts()
+        .then(response => {
+          console.log("effect")
+          setUserActivity(response.data.attempts)
+        })
     }
   }, [user, showAll])
 
