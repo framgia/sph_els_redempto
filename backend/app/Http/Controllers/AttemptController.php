@@ -15,6 +15,11 @@ class AttemptController extends Controller
     {
         $attempts = Attempt::all();
 
+        foreach($attempts as $attempt) {
+            $attempt->user;
+            $attempt->category;
+        }
+
         return response()->json([
             'attempts' => $attempts,
         ], 201);
@@ -80,6 +85,11 @@ class AttemptController extends Controller
     public function getAttemptsByUser(User $user)
     {
         $attempts = $user->attempts;
+
+        foreach ($attempts as $attempt) {
+            $attempt->user;
+            $attempt->category;
+        }
 
         return response()->json([
             'attempts' => $attempts,

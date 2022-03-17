@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import Avatar from './Avatar';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import DateHelper from '../helper/DateHelper';
 
-function ActivityItem() {
+function ActivityItem({ attempt }) {
+    useEffect(() => {
+    }, [])
     return (
         <div className="bg-blue-100 rounded-xl p-3 mb-2">
             <Avatar />
             <div className="inline-block w-5/6 ml-4 mt-3">
                 <div>
-                    <Link to = "../../users/1/activity"><span className="text-red font-bold">User </span> </Link>
-                    learned 20 of 20 words in <span className="text-red font-bold">Category</span>
+                    <Link to={`../../users/${attempt.user.id}/activity`}><span className="text-red font-bold">{attempt.user.full_name}</span> </Link>
+                    learned {attempt.score} words in <span className="text-red font-bold">{attempt.category.title}</span>
                 </div>
                 <div>
-                    <span className="text-gray-500 font-bold">2 days ago</span>
+                    <span className="text-gray-500 font-bold">{DateHelper.howLongSince(Date.parse(attempt.date_finished))}</span>
                 </div>
             </div>
         </div>
