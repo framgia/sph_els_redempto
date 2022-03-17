@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attempt;
-use Carbon\Carbon;
 use App\Models\Answer;
 use App\Models\User;
 use App\Models\Category;
+use Carbon\Carbon;
 
 class AttemptController extends Controller
 {
@@ -54,6 +54,8 @@ class AttemptController extends Controller
                 'question_no' => $request->question_nos[$index],
                 'answer' => $answer,
             ]);
+
+            $index++;
         }
 
         return response()->json([

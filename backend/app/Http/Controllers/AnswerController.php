@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Answer;
 use App\Models\Attempt;
+use App\Models\User;
 
 class AnswerController extends Controller
 {
@@ -47,6 +48,25 @@ class AnswerController extends Controller
 
         return response()->json([
             "answers" => $answers,
+        ], 201);
+    }
+
+    public function getAnswersByUser(User $user) {
+
+        $attempts = $user->attempts;
+        $answerList = collect([]);
+
+        foreach ($attempts as $attempt) {
+            $answers = $attempt->answers;
+            foreach ($answers as $answer) {
+                $answer->word;
+            }
+            $answerList = $answerList->merge($answers);
+        }
+
+        return response()->json([
+            "attempts" => $attempts,
+            "answers" => $answerList,
         ], 201);
     }
 

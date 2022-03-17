@@ -6,7 +6,7 @@ const useUserActivityView = (view, user, showAll=false) => {
         case 'activity':
             return <Activities user={user} showAll={showAll} />
         case 'history':
-            return <WordsLearned />
+            return <WordsLearned user={user}/>
         default:
             return <></>
     }

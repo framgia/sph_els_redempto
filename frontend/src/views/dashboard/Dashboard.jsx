@@ -30,8 +30,7 @@ const Dashboard = ({ view = "" }) => {
                                             {user.full_name}
                                         </span>
                                     </Link>
-                                    <Link to="/dashboard/history"><span className="text-blue-300 block">Learned 20 words</span></Link>
-                                    <span className="text-black block">Learned 5 lessons</span>
+                                    <Link to="/dashboard/history"><span className="text-blue-300 block">Word History</span></Link>
                                 </div>
                             </div>
                         </div>

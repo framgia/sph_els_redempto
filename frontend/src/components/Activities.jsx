@@ -17,7 +17,6 @@ const Activities = ({ user = null, showAll = false }) => {
     else {
       UserService.getAllAttempts()
         .then(response => {
-          console.log("effect")
           setUserActivity(response.data.attempts)
         })
     }
