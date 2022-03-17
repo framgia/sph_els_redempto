@@ -30,19 +30,16 @@ function App() {
           <NavBar />
           <Routes>
             <Route index path="/" element={<Navigate replace to="/dashboard/activity" />} />
-            <Route path="dashboard" element={<Dashboard />}>
-              <Route index path="activity" element={<Activities />} />
-              <Route path="history" element={<WordsLearned />} />
-            </Route>
-            <Route path="categories" element={<Categories />} />
+
+            <Route path="dashboard/activity" element={<Dashboard view = "activity" />}/>
+            <Route path="dashboard/history" element={<Dashboard view = "history" />}/>
             <Route path="lesson" element={<Lessons />}>
               <Route path=":lessonSlug/quiz" element={<LessonQuiz />} />
             </Route>
-            <Route path="users/:id" element={<Profile />}>
-              <Route index path="activity" element={<Activities />} />
-              <Route index path="history" element={<WordsLearned />} />
-              <Route path="*" element={<NoView />} />
-            </Route>
+
+            <Route path="users/:id/activity" element={<Profile view = "activity"/>}/>
+            <Route path="users/:id/history" element={<Profile view = "history"/>}/>
+
             <Route path="categories" element={<Categories />} />
             <Route path="categories/add" element={<CategoryAdd />} />
             <Route path="categories/edit" element={<CategoryEdit />} />
@@ -50,6 +47,7 @@ function App() {
             <Route path="categories/edit/:lessonSlug/words" element={<WordsEdit />} />
             <Route path="categories/edit/:lessonSlug/words/add" element={<WordAdd />} />
             <Route path="categories/edit/:lessonSlug/words/:wordId" element={<WordEdit />} />
+            
             <Route path="sign-up" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="*" element={<NoView />} />

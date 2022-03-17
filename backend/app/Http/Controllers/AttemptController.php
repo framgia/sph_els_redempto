@@ -13,7 +13,7 @@ class AttemptController extends Controller
 {
     public function index()
     {
-        $attempts = Attempt::all();
+        $attempts = Attempt::with(['user', 'category'])->get();
 
         return response()->json([
             'attempts' => $attempts,
@@ -77,9 +77,9 @@ class AttemptController extends Controller
         ], 201);
     }
 
-    public function getAttemptsByUser(User $user)
+    public function getAttemptsByUser($userId)
     {
-        $attempts = $user->attempts;
+        $attempts = Attempt::with(['user', 'category'])->where('user_id', $userId)->get();
 
         return response()->json([
             'attempts' => $attempts,
@@ -87,41 +87,19 @@ class AttemptController extends Controller
     }
     public function getAttemptBySlugAndId($userId, Category $category)
     {
-        $word = $category->words->first();
-        if ($word == null) {
+        $attempt = Attempt::where('user_id', $userId)
+            ->whereHas('answers.word', function ($query) use ($category) {
+                $query->where('category_id', '=', $category->id);
+            })->get()->first();
+
+        if ($attempt == null) {
             return response()->json([
-                'message' => "No words in category",
+                'message' => 'User has not attempted lesson yet'
             ], 401);
-        }
-
-        $answers = $word->answers;
-
-        if ($answers == null) {
-            return response()->json([
-                'message' => "No attempts found",
-            ], 401);
-        }
-        else if (count($answers) == 0) {
-            return response()->json([
-                'message' => "No attempts for this category",
-            ], 401);
-        }
-
-        foreach ($answers as $answer) {
-            $attempt = $answer->attempt;
-            $user = $attempt->user;
-
-            if ($user->id != $userId) {
-                continue;
-            }
-
-            return response()->json([
-                'attempt' => $attempt,
-            ], 201);
         }
 
         return response()->json([
-            'message' => 'No attempts in this category',
-        ], 401);
+            'attempt' => $attempt,
+        ], 201);
     }
 }
