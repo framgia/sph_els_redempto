@@ -51,22 +51,20 @@ class AnswerController extends Controller
         ], 201);
     }
 
-    public function getAnswersByUser(User $user) {
+    public function getAnswersByUser($userId)
+    {
 
-        $attempts = $user->attempts;
-        $answerList = collect([]);
+        $attempts = Attempt::with('answers.word')
+            ->where('user_id', $userId)->get();
 
-        foreach ($attempts as $attempt) {
-            $answers = $attempt->answers;
-            foreach ($answers as $answer) {
-                $answer->word;
-            }
-            $answerList = $answerList->merge($answers);
-        }
+        $answers = Answer::with('word')
+            ->whereHas('attempt', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
 
         return response()->json([
             "attempts" => $attempts,
-            "answers" => $answerList,
+            "answers" => $answers,
         ], 201);
     }
 

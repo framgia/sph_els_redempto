@@ -61,7 +61,7 @@ const WordsEdit = () => {
                             words.map((word, i) => {
                                 if (i >= (itemPerPage * pageNo) && i < itemPerPage + (itemPerPage * pageNo)) {
                                     return (
-                                        <tr key={i} className={`${i % 2 ? "bg-gray-200" : ""}`}>
+                                        <tr key={i}>
                                             <td> {word.word} </td>
                                             {
                                                 word.choices.map((choice, j) => {

@@ -7,13 +7,13 @@ const WordsLearned = ({ user = null }) => {
   const [attempts, setAttempts] = useState([])
 
   useEffect(() => {
-    if (user != null) {
-      UserService.getUserAnswers(user.id)
-        .then(response => {
-          setAttempts(response.data.attempts)
-          setAnswers(response.data.answers)
-        })
-    }
+    if (user == null) return
+
+    UserService.getUserAnswers(user.id)
+      .then(response => {
+        setAttempts(response.data.attempts)
+        setAnswers(response.data.answers)
+      })
   }, [user])
 
 
@@ -39,7 +39,7 @@ const WordsLearned = ({ user = null }) => {
               </tr>
               {answers.map((answer, index) => {
                 return (
-                  <tr key={index} className={`${!(index % 2) ? "bg-gray-200" : ""}`}>
+                  <tr key={index}>
                     <th>{index + 1}</th>
                     <td className='text-center'>{answer.word.word}</td>
                     <td className='text-center'>{answer.word.correct_answer}</td>
