@@ -16,6 +16,11 @@ class AttemptController extends Controller
     {
         $attempts = Attempt::with(['user', 'category'])->get();
 
+        foreach($attempts as $attempt) {
+            $attempt->user;
+            $attempt->category;
+        }
+
         return response()->json([
             'attempts' => $attempts,
         ], 201);
@@ -77,6 +82,11 @@ class AttemptController extends Controller
     {
         $attempts = Attempt::with(['user', 'category'])->where('user_id', $userId)->get();
 
+        foreach ($attempts as $attempt) {
+            $attempt->user;
+            $attempt->category;
+        }
+
         return response()->json([
             'attempts' => $attempts,
         ], 201);
@@ -96,6 +106,25 @@ class AttemptController extends Controller
 
         return response()->json([
             'attempt' => $attempt,
+        ], 201);
+    }
+
+    public function getAttemptsByFollowings(User $user) {
+        $followings = $user->following;
+        $attemptList = collect([]);
+
+        foreach($followings as $following) {
+            $attempts = $following->attempts;
+
+            foreach ($attempts as $attempt) {
+                $attempt->user;
+                $attempt->category;
+            }
+
+            $attemptList = $attemptList->merge($attempts);
+        }
+        return response()->json([
+            'attempts' => $attemptList
         ], 201);
     }
 }

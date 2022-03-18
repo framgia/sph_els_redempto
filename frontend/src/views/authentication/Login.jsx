@@ -27,9 +27,6 @@ const Login = () => {
                     navigate("/");
                 }
             }))
-            .catch((response) => {
-                console.log(response)
-            })
 
         setUsername("")
         setPassword("")

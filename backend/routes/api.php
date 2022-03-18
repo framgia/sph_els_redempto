@@ -6,8 +6,8 @@ use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\AttemptController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\WordController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\WordController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -42,6 +42,7 @@ Route::get('/users/{userId}', [UserController::class, 'show']);
 Route::get('/users/{userId}/attempts', [AttemptController::class, 'getAttemptsByUser']);
 Route::get('/users/{userId}/answers', [AnswerController::class, 'getAnswersByUser']);
 Route::get('/users/{userId}/attempts/{category:slug}', [AttemptController::class, 'getAttemptBySlugAndId']);
+Route::get('/users/{user}/followings/attempts', [AttemptController::class, 'getAttemptsByFollowings']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
