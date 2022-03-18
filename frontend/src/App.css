@@ -16,3 +16,7 @@
 .w-most {
   width: 75vw;
 }
+
+tr:nth-child(even) {
+  background-color: #aeafb0;
+}

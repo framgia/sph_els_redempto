@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import BASEAPI from '../../api/baseApi';
 import Avatar from '../../components/Avatar';
-import Activities from '../../components/Activities';
-import WordsLearned from '../../components/WordsLearned';
 import Divider from '../../components/Divider';
 import UserService from '../../api/userService';
 import Cookies from 'js-cookie'
@@ -73,7 +71,7 @@ const Profile = ({view = ""}) => {
             <div className="w-full mt-5">
                 <Avatar className="w-8/12 block m-auto" />
                 <div className="block align-top pt-2 text-center">
-                    <Link to="activity">
+                    <Link to={`/users/${id}/activity`}>
                         <span className="text-black block font-bold text-xl mt-5">{
                             user != null ?
                                 user.full_name :
@@ -103,7 +101,7 @@ const Profile = ({view = ""}) => {
                                 {isFollowing ? "Unfollow" : "Follow"}
                             </button>
                     }
-                    <Link to="history"><span className="text-blue-700 block mt-5">Learned 20 words</span></Link>
+                    <Link to={`/users/${id}/history`}><span className="text-blue-700 block mt-5">Learned 20 words</span></Link>
                                 </div>
                             </div>
                 }

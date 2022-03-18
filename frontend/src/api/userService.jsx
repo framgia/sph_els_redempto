@@ -7,6 +7,9 @@ const UserService = {
     getUserActivity: (userId) => {
         return BASEAPI.get(`/users/${userId}/attempts`)
     },
+    getUserAnswers: (userId) => {
+        return BASEAPI.get(`/users/${userId}/answers`)
+    },
     getAllAttempts: () => {
         return BASEAPI.get('/attempts')
     }

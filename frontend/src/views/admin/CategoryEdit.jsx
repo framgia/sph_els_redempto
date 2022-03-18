@@ -22,7 +22,7 @@ const CategoryEdit = () => {
     const itemPerPage = 10;
     const pageButtons = [];
     for (let i = 0; i <= Math.floor((categoryList.length - 1) / itemPerPage); i++) {
-        pageButtons.push(<button key={i} className={`btn btn-sm ${pageNo === i ? "btn-active" : ""}`} onClick={() => setPageNo(i)}>{i + 1}</button>)
+        pageButtons.push(<button key={i} onClick={() => setPageNo(i)}>{i + 1}</button>)
     }
 
     const handleDelete = (event, category) => {

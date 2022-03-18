@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use App\Models\Attempt;
-use Carbon\Carbon;
 use App\Models\Answer;
 use App\Models\User;
 use App\Models\Category;
+use Carbon\Carbon;
 
 class AttemptController extends Controller
 {
@@ -37,30 +38,25 @@ class AttemptController extends Controller
             'answers' => ['required', 'array'],
             'score' => ['required', 'integer'],
         ]);
-
+        
         $attempt = Attempt::create([
             'user_id' => $request->user_id,
             'category_id' => $request->category_id,
             'date_finished' => Carbon::now(),
             'score' => $request->score,
         ]);
-
-        $index = 0;
-
-        foreach ($request->answers as $answer) {
+        
+        foreach ($request->answers as $key=>$answer) {
             $answer = Answer::create([
                 'attempt_id' => $attempt->id,
-                'word_id' => $request->word_ids[$index],
-                'question_no' => $request->question_nos[$index],
+                'word_id' => $request->word_ids[$key],
+                'question_no' => $request->question_nos[$key],
                 'answer' => $answer,
             ]);
         }
 
         return response()->json([
             'attempt' => $attempt,
-            'word_ids' => $request->word_ids,
-            'question_nos' => $request->question_nos,
-            'answers' => $request->answers,
         ], 201);
     }
 

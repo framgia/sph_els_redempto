@@ -31,7 +31,7 @@ const LessonQuiz = () => {
             .then(response => {
                 setAttempt(response.data.attempt)
             })
-            .catch(error=>{
+            .catch(error => {
                 setIsTaken(false)
             })
     }, [lessonSlug, currentUser.id])
@@ -39,7 +39,7 @@ const LessonQuiz = () => {
     const handleSubmit = () => {
         setIsSubmitting(true);
         const formData = new FormData();
-        
+
         formData.append('user_id', currentUser.id)
         formData.append('category_id', category.id)
         formData.append('score', score)
@@ -92,9 +92,9 @@ const LessonQuiz = () => {
                                             <>
                                                 <span className="text-5xl w-full font-bold text-center mb-4">
                                                     {
-                                                        attempt != null ? 
-                                                        "You have already taken this lesson":
-                                                        category.title
+                                                        attempt != null ?
+                                                            "You have already taken this lesson" :
+                                                            category.title
 
                                                     }
                                                 </span>

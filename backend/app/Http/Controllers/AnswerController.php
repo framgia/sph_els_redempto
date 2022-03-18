@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Answer;
 use App\Models\Attempt;
+use App\Models\User;
 
 class AnswerController extends Controller
 {
@@ -46,6 +47,23 @@ class AnswerController extends Controller
         $answers = $attempt->answers;
 
         return response()->json([
+            "answers" => $answers,
+        ], 201);
+    }
+
+    public function getAnswersByUser($userId)
+    {
+
+        $attempts = Attempt::with('answers.word')
+            ->where('user_id', $userId)->get();
+
+        $answers = Answer::with('word')
+            ->whereHas('attempt', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
+
+        return response()->json([
+            "attempts" => $attempts,
             "answers" => $answers,
         ], 201);
     }
