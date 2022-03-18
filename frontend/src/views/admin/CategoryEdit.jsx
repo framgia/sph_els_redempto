@@ -3,12 +3,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BASEAPI from '../../api/baseApi';
 import Divider from '../../components/Divider'
-import { AppContext } from '../../context/AppContext';
 
 const CategoryEdit = () => {
-    const context = React.useContext(AppContext)
-    const [currentUser, setCurrentUser] = context.user
-
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
@@ -26,14 +22,7 @@ const CategoryEdit = () => {
     }
 
     const handleDelete = (event, category) => {
-        BASEAPI.delete(
-            `categories/${category.slug}`,
-            {
-                headers: {
-                    'Authorization': `Bearer ${currentUser.token}`,
-                }
-            }
-            )
+        BASEAPI.delete(`categories/${category.slug}`,)
         .then(response => {
             setCategoryList(prevList=>prevList.filter(prevCategory => prevCategory.id !== category.id))
         })

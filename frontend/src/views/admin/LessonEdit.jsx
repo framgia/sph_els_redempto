@@ -3,13 +3,9 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BASEAPI from '../../api/baseApi';
 import Divider from '../../components/Divider'
-import { AppContext } from '../../context/AppContext'
 
 const LessonEdit = () => {
-    const context = React.useContext(AppContext)
     const navigate = useNavigate();
-    
-    const [currentUser, setCurrentUser] = context.user
     const [lesson, setLesson] = useState([])
     const [lessonTitle, setLessonTitle] = useState("")
     const [lessonSlugText, setLessonSlugText] = useState("")
@@ -34,14 +30,7 @@ const LessonEdit = () => {
         formData.append('title', lessonTitle)
         formData.append('slug', lessonSlugText)
         formData.append('description', lessonDescription)
-        BASEAPI.post(`categories/${lessonSlug}/?_method=PUT`,
-            formData,
-            {
-                headers: {
-                    'Authorization': `Bearer ${currentUser.token}`,
-                }
-            }
-        )
+        BASEAPI.post(`categories/${lessonSlug}/?_method=PUT`, formData)
             .then((response) => {
                 navigate(-1)
             })

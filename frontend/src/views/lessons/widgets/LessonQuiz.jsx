@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BASEAPI from '../../../api/baseApi'
 import LessonItem from './LessonItem';
 import Cookies from 'js-cookie'
+import UserService from '../../../api/userService';
 
 const LessonQuiz = () => {
     const currentUser = JSON.parse(Cookies.get('user'))
@@ -49,10 +50,9 @@ const LessonQuiz = () => {
             return 0;
         })
 
-        BASEAPI.post(`attempts`, formData)
-            .finally(() => {
-                navigate("/dashboard/history")
-            })
+        UserService.postAnswers(formData, () => {
+            navigate("/dashboard/history")
+        })
     }
 
     const renderLessonItem = () => {

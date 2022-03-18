@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import BASEAPI from '../../api/baseApi'
+import UserService from '../../api/userService'
 import { AppContext } from '../../context/AppContext'
-import Cookies from 'js-cookie'
 
 const SignUp = () => {
+    const context = useContext(AppContext);
+    const setUser = context.setUser;
+
     const navigate = useNavigate();
-    const context = React.useContext(AppContext)
-    const [currentUser, setCurrentUser] = context.user
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
@@ -24,17 +24,9 @@ const SignUp = () => {
         formData.append('password', password);
         formData.append('password_confirmation', cPassword);
 
-        const getUser = () => {
-            BASEAPI.post("register", formData)
-                .then((response) => {
-                    setCurrentUser(response.data)
-                    Cookies.set('user', JSON.stringify(response.data.user))
-                    Cookies.set('token', response.data.token)
-                    navigate("/");
-                })
-        }
-
-        getUser();
+        UserService.signup(formData, setUser, () => {
+            navigate("/");
+        })
     }
 
     return (
