@@ -50,9 +50,6 @@ const LessonQuiz = () => {
         })
 
         BASEAPI.post(`attempts`, formData)
-            .catch((error)=> {
-                console.log(error.response.data)
-            })
             .finally(() => {
                 navigate("/dashboard/history")
             })

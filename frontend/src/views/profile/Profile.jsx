@@ -46,6 +46,7 @@ const Profile = ({ view = "" }) => {
     }
 
     useEffect(() => {
+        currentUser.current != null &&
         UserService.getUser(id)
             .then((response) => {
                 setUser(response.data.user)
@@ -62,52 +63,50 @@ const Profile = ({ view = "" }) => {
 
     return (
         <div className="text-black flex-1 w-10/12 m-auto">
-            <div className="inline-block align-top w-4/12 p-10">
-                {
-                    user == null ?
-                        <div className="w-full mt-5 h-1/2 text-2xl flex justify-center">
-                            Loading...
-                        </div> :
-                        <div className="w-full mt-5">
-                            <Avatar className="w-8/12 block m-auto" />
-                            <div className="block align-top pt-2 text-center">
-                                <Link to={`/users/${id}/activity`}>
-                                    <span className="text-black block font-bold text-xl mt-5">{
-                                        user != null ?
-                                            user.full_name :
-                                            ""
-                                    }
-                                    </span>
-                                </Link>
-                                <div className='w-9/12 m-auto'>
-                                    <Divider />
-                                </div>
-                                <div className="mt-3 flex w-8/12 m-auto">
-                                    <div className="w-1/2">
-                                        {user.followers.length}
-                                        <br />
-                                        followers
+            {
+                currentUser.current != null && 
+                <>
+                    <div className="inline-block align-top w-4/12 p-10">
+                        {
+                            user == null ?
+                                <div className="w-full mt-5 h-1/2 text-2xl flex justify-center">
+                                    Loading...
+                                </div> :
+                                <div className="w-full mt-5">
+                                    <Avatar className="w-8/12 block m-auto" />
+                                    <div className="block align-top pt-2 text-center">
+                                        <Link to={`/users/${id}/activity`}>
+                                            <span className="text-black block font-bold text-xl mt-5">
+                                                {user != null && user.full_name}
+                                            </span>
+                                        </Link>
+                                        <div className='w-9/12 m-auto'>
+                                            <Divider />
+                                        </div>
+                                        <div className="mt-3 flex w-8/12 m-auto">
+                                            <div className="w-1/2">
+                                                {user.followers.length}
+                                                <span className="block">followers</span>
+                                            </div>
+                                            <div className="w-1/2">
+                                                {user.following.length}
+                                                <span className="block">following</span>
+                                            </div>
+                                        </div>
+                                        {
+                                            parseInt(id) !== currentUser.current.id &&
+                                            <button className="btn btn-primary mt-8 w-7/12" disabled={isFollowing == null || isDisabled} onClick={() => handleFollow()}>
+                                                {isFollowing ? "Unfollow" : "Follow"}
+                                            </button>
+                                        }
+                                        <Link to={`/users/${id}/history`}><span className="text-blue-700 block mt-5">Learned 20 words</span></Link>
                                     </div>
-                                    <div className="w-1/2">
-                                        {user.following.length}
-                                        <br />
-                                        following
-                                    </div>
                                 </div>
-                                {
-                                    parseInt(id) === currentUser.current.id ?
-                                        <></> :
-                                        <button className="btn btn-primary mt-8 w-7/12" disabled={isFollowing == null || isDisabled} onClick={() => handleFollow()}>
-                                            {isFollowing ? "Unfollow" : "Follow"}
-                                        </button>
-                                }
-                                <Link to={`/users/${id}/history`}><span className="text-blue-700 block mt-5">Learned 20 words</span></Link>
-                            </div>
-                        </div>
-                }
-
-            </div>
-            {display}
+                        }
+                    </div>
+                    {display}
+                </>
+            }
         </div>
     )
 }
