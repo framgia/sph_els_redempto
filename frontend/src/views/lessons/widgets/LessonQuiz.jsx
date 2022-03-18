@@ -39,7 +39,6 @@ const LessonQuiz = () => {
     const handleSubmit = () => {
         setIsSubmitting(true);
         const formData = new FormData();
-
         formData.append('user_id', currentUser.id)
         formData.append('category_id', category.id)
         formData.append('score', score)

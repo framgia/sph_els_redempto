@@ -10,6 +10,9 @@ const UserService = {
     getUserAnswers: (userId) => {
         return BASEAPI.get(`/users/${userId}/answers`)
     },
+    getFollowerActivity: (userId) => {
+        return BASEAPI.get(`/users/${userId}/followings/attempts`)
+    },
     getAllAttempts: () => {
         return BASEAPI.get('/attempts')
     }

@@ -38,15 +38,15 @@ class AttemptController extends Controller
             'answers' => ['required', 'array'],
             'score' => ['required', 'integer'],
         ]);
-        
+
         $attempt = Attempt::create([
             'user_id' => $request->user_id,
             'category_id' => $request->category_id,
             'date_finished' => Carbon::now(),
             'score' => $request->score,
         ]);
-        
-        foreach ($request->answers as $key=>$answer) {
+
+        foreach ($request->answers as $key => $answer) {
             $answer = Answer::create([
                 'attempt_id' => $attempt->id,
                 'word_id' => $request->word_ids[$key],
@@ -85,8 +85,8 @@ class AttemptController extends Controller
     {
         $attempt = Attempt::where('user_id', $userId)
             ->whereHas('answers.word', function ($query) use ($category) {
-                $query->where('category_id', '=', $category->id);
-            })->get()->first();
+            $query->where('category_id', '=', $category->id);
+        })->get()->first();
 
         if ($attempt == null) {
             return response()->json([
@@ -96,6 +96,18 @@ class AttemptController extends Controller
 
         return response()->json([
             'attempt' => $attempt,
+        ], 201);
+    }
+
+    public function getAttemptsByFollowings($userId)
+    {
+        $attemptList = Attempt::with(['user', 'category'])
+            ->whereHas('user.followers', function($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })->get();
+
+        return response()->json([
+            'attempts' => $attemptList
         ], 201);
     }
 }

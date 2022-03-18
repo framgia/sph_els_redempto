@@ -3,24 +3,24 @@ import Divider from './Divider';
 import ActivityItem from './ActivityItem';
 import UserService from '../api/userService';
 
-const Activities = ({ user = null, showAll = false }) => {
+const Activities = ({ user = null, followersOnly = false }) => {
   const [userActivity, setUserActivity] = useState([]);
 
   useEffect(() => {
     if (user == null) return
-    if (!showAll) {
+    if (!followersOnly) {
       UserService.getUserActivity(user.id)
         .then(response => {
           setUserActivity(response.data.attempts)
         })
     }
     else {
-      UserService.getAllAttempts()
+      UserService.getFollowerActivity(user.id)
         .then(response => {
           setUserActivity(response.data.attempts)
         })
     }
-  }, [user, showAll])
+  }, [user, followersOnly])
 
   return (
     <div className="inline-block align-top h-full w-8/12 p-10 box-sizing">
