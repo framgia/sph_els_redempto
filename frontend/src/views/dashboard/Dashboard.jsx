@@ -20,7 +20,7 @@ const Dashboard = ({ view = "" }) => {
                             <span className="text-2xl">Dashboard</span>
                             <Divider />
                             <div className="w-full mt-5">
-                                <Avatar />
+                                <Avatar user={user}/>
                                 <div className="inline-block align-top pt-2 ml-3">
                                     <Link to="/dashboard/activity">
                                         <span className="text-black block font-bold">

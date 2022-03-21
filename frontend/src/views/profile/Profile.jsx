@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import BASEAPI from '../../api/baseApi';
 import Avatar from '../../components/Avatar';
 import Divider from '../../components/Divider';
 import UserService from '../../api/userService';
@@ -11,7 +10,7 @@ const Profile = ({ view = "" }) => {
     const { id } = useParams();
 
     const context = useContext(AppContext)
-    const currentUser = JSON.parse(context.user)
+    const currentUser = useRef(JSON.parse(context.user))
 
     const [isFollowing, setIsFollowing] = useState(null);
     const [isDisabled, setIsDisabled] = useState(true);
@@ -22,13 +21,13 @@ const Profile = ({ view = "" }) => {
     const handleFollow = () => {
         setIsDisabled(true)
         if (isFollowing) {
-            UserService.unfollowUser(currentUser, user, () => {
+            UserService.unfollowUser(currentUser.current, user, () => {
                 setIsFollowing((prevIsFollow) => !prevIsFollow)
                 setIsDisabled(false)
             })
         }
         else {
-            UserService.followUser(currentUser, user, () => {
+            UserService.followUser(currentUser.current, user, () => {
                 setIsFollowing((prevIsFollow) => !prevIsFollow)
                 setIsDisabled(false)
             })
@@ -40,7 +39,7 @@ const Profile = ({ view = "" }) => {
         return (
             user != null ?
                 (<div className="w-full mt-5">
-                    <Avatar className="w-8/12 block m-auto" />
+                    <Avatar className="w-8/12 block m-auto" user={user}/>
                     <div className="block align-top pt-2 text-center">
                         <Link to={`/users/${id}/activity`}>
                             <span className="text-black block font-bold text-xl mt-5">
@@ -61,12 +60,18 @@ const Profile = ({ view = "" }) => {
                             </div>
                         </div>
                         {
-                            parseInt(id) !== currentUser.id &&
+                            parseInt(id) !== currentUser.current.id &&
                             <button className="btn btn-primary mt-8 w-7/12" disabled={isFollowing == null || isDisabled} onClick={() => handleFollow()}>
                                 {isFollowing ? "Unfollow" : "Follow"}
                             </button>
                         }
                         <Link to={`/users/${id}/history`}><span className="text-blue-700 block mt-5">Learned 20 words</span></Link>
+                        {
+                            parseInt(id) === currentUser.current.id &&
+                            <Link to = {`/users/${id}/edit`} className="btn btn-ghost text-blue-800 w-7/12" disabled={isFollowing == null || isDisabled}>
+                                Edit profile
+                            </Link>
+                        }
                     </div>
                 </div>) :
                 (<div className="w-full mt-5 h-1/2 text-2xl flex justify-center">
@@ -76,11 +81,11 @@ const Profile = ({ view = "" }) => {
     }
 
     useEffect(() => {
-        currentUser != null &&
+        currentUser.current != null &&
             UserService.getUser(id)
                 .then((response) => {
                     setUser(response.data.user)
-                    const followData = response.data.user.followers.find((user) => user.id === currentUser.id)
+                    const followData = response.data.user.followers.find((user) => user.id === currentUser.current.id)
                     if (typeof followData === 'undefined' || followData === null) {
                         setIsFollowing(false)
                     }
