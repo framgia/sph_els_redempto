@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import BASEAPI from '../../api/baseApi'
+import CategoryService from '../../api/categoryService'
 import Divider from '../../components/Divider'
 
 const WordAdd = () => {
@@ -17,7 +18,7 @@ const WordAdd = () => {
     const [choice4, setChoice4] = useState("")
 
     useEffect(() => {
-        BASEAPI.get(`categories/${lessonSlug}`)
+        CategoryService.getCategory(lessonSlug)
             .then(response => {
                 const data = response.data.category
                 setLesson(data)

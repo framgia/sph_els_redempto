@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import BASEAPI from '../../api/baseApi';
+import AdminService from '../../api/adminService';
+import CategoryService from '../../api/categoryService';
 import Divider from '../../components/Divider'
 
 const LessonEdit = () => {
@@ -13,7 +14,7 @@ const LessonEdit = () => {
 
     const { lessonSlug } = useParams()
     useEffect(() => {
-        BASEAPI.get(`categories/${lessonSlug}`)
+        CategoryService.getCategory(lessonSlug)
             .then(response => {
                 const data = response.data.category
                 setLesson(data)
@@ -30,11 +31,9 @@ const LessonEdit = () => {
         formData.append('title', lessonTitle)
         formData.append('slug', lessonSlugText)
         formData.append('description', lessonDescription)
-        BASEAPI.post(`categories/${lessonSlug}/?_method=PUT`, formData)
-            .then((response) => {
-                navigate(-1)
-            })
-            .catch((error) => console.log(error))
+        AdminService.updateCategory(lessonSlug, formData, () => {
+            navigate(-1)
+        })
     }
 
     return (

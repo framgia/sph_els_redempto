@@ -23,6 +23,7 @@ const NavBar = () => {
                 </span>
                 <div className="divider divider-horizontal"></div>
                 <span className='text-xl font-bold'>
+                    <Link to="/users" className='btn-ghost p-5'>Users</Link>
                     <Link to="/categories" className='btn-ghost p-5'>Categories</Link>
                 </span>
             </div>

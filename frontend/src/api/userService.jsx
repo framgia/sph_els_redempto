@@ -5,6 +5,9 @@ const UserService = {
     getUser: (userId) => {
         return BASEAPI.get(`/users/${userId}`)
     },
+    getUsers: () => {
+        return BASEAPI.get(`/users`)
+    },
     getUserActivity: (userId) => {
         return BASEAPI.get(`/users/${userId}/attempts`)
     },

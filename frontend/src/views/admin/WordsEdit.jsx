@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import BASEAPI from '../../api/baseApi';
+import AdminService from '../../api/adminService';
+import CategoryService from '../../api/categoryService';
 import Divider from '../../components/Divider';
 
 const WordsEdit = () => {
@@ -11,13 +12,9 @@ const WordsEdit = () => {
     const [words, setWords] = useState([])
 
     useEffect(() => {
-        BASEAPI.get(`categories/${lessonSlug}`)
+        CategoryService.getCategoryWords(lessonSlug)
             .then(response => {
                 setLesson(response.data.category)
-            })
-
-        BASEAPI.get(`categories/${lessonSlug}/words`)
-            .then(response => {
                 setWords(response.data.words)
             })
     }, [lessonSlug])
@@ -30,9 +27,8 @@ const WordsEdit = () => {
     }
 
     const handleDelete = (event, word) => {
-        BASEAPI.delete(`words/${word.id}`,)
-        .then(response => {
-            setWords(prevList=>prevList.filter(prevWord => prevWord.id !== word.id))
+        AdminService.deleteWord(word.id, () => {
+            setWords(prevList => prevList.filter(prevWord => prevWord.id !== word.id))
         })
     }
 
@@ -75,7 +71,7 @@ const WordsEdit = () => {
                                             <td>{word.correct_answer}</td>
                                             <td className="flex justify-end">
                                                 <Link to={`${word.id}`} className="btn btn-ghost text-blue-600">Edit</Link>
-                                                <button className="btn btn-ghost text-red-600" onClick={(event) => {handleDelete(event, word)}}>Del</button>
+                                                <button className="btn btn-ghost text-red-600" onClick={(event) => { handleDelete(event, word) }}>Del</button>
                                             </td>
                                         </tr>
                                     )

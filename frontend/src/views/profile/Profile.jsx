@@ -39,7 +39,7 @@ const Profile = ({ view = "" }) => {
         return (
             user != null ?
                 (<div className="w-full mt-5">
-                    <Avatar className="w-8/12 block m-auto" user={user}/>
+                    <Avatar className="w-8/12 block m-auto" user={user} />
                     <div className="block align-top pt-2 text-center">
                         <Link to={`/users/${id}/activity`}>
                             <span className="text-black block font-bold text-xl mt-5">
@@ -60,15 +60,15 @@ const Profile = ({ view = "" }) => {
                             </div>
                         </div>
                         {
-                            parseInt(id) !== currentUser.id &&
+                            currentUser.current != null && parseInt(id) !== currentUser.current.id &&
                             <button className="btn btn-primary mt-8 w-7/12" disabled={isFollowing == null || isDisabled} onClick={() => handleFollow()}>
                                 {isFollowing ? "Unfollow" : "Follow"}
                             </button>
                         }
                         <Link to={`/users/${id}/history`}><span className="text-blue-700 block mt-5">Learned 20 words</span></Link>
                         {
-                            parseInt(id) === currentUser.current.id &&
-                            <Link to = {`/users/${id}/edit`} className="btn btn-ghost text-blue-800 w-7/12" disabled={isFollowing == null || isDisabled}>
+                            currentUser.current != null && parseInt(id) === currentUser.current.id &&
+                            <Link to={`/users/${id}/edit`} className="btn btn-ghost text-blue-800 w-7/12" disabled={isFollowing == null || isDisabled}>
                                 Edit profile
                             </Link>
                         }
@@ -81,11 +81,11 @@ const Profile = ({ view = "" }) => {
     }
 
     useEffect(() => {
-        currentUser != null &&
-            UserService.getUser(id)
-                .then((response) => {
-                    setUser(response.data.user)
-                    const followData = response.data.user.followers.find((user) => user.id === currentUser.id)
+        UserService.getUser(id)
+            .then((response) => {
+                setUser(response.data.user)
+                if (currentUser.current != null) {
+                    const followData = response.data.user.followers.find((user) => user.id === currentUser.current.id)
                     if (typeof followData === 'undefined' || followData === null) {
                         setIsFollowing(false)
                     }
@@ -93,7 +93,8 @@ const Profile = ({ view = "" }) => {
                         setIsFollowing(true)
                     }
                     setIsDisabled(false)
-                });
+                }
+            });
     }, [id])
 
     return (
