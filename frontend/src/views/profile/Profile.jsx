@@ -60,7 +60,7 @@ const Profile = ({ view = "" }) => {
                             </div>
                         </div>
                         {
-                            parseInt(id) !== currentUser.current.id &&
+                            parseInt(id) !== currentUser.id &&
                             <button className="btn btn-primary mt-8 w-7/12" disabled={isFollowing == null || isDisabled} onClick={() => handleFollow()}>
                                 {isFollowing ? "Unfollow" : "Follow"}
                             </button>
@@ -81,11 +81,11 @@ const Profile = ({ view = "" }) => {
     }
 
     useEffect(() => {
-        currentUser.current != null &&
+        currentUser != null &&
             UserService.getUser(id)
                 .then((response) => {
                     setUser(response.data.user)
-                    const followData = response.data.user.followers.find((user) => user.id === currentUser.current.id)
+                    const followData = response.data.user.followers.find((user) => user.id === currentUser.id)
                     if (typeof followData === 'undefined' || followData === null) {
                         setIsFollowing(false)
                     }
