@@ -3,13 +3,10 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BASEAPI from '../../api/baseApi'
 import Divider from '../../components/Divider'
-import { AppContext } from '../../context/AppContext'
 
 const CategoryAdd = () => {
-    const context = React.useContext(AppContext)
     const navigate = useNavigate();
 
-    const [currentUser, setCurrentUser] = context.user
     const [lessonTitle, setLessonTitle] = useState("")
     const [lessonSlug, setLessonSlug] = useState("")
     const [lessonDescription, setLessonDescription] = useState("")

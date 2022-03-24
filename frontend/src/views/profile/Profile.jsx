@@ -1,20 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import BASEAPI from '../../api/baseApi';
 import Avatar from '../../components/Avatar';
 import Divider from '../../components/Divider';
 import UserService from '../../api/userService';
-import Cookies from 'js-cookie'
 import useUserActivityView from '../../hooks/useUserActivityView';
+import { AppContext } from '../../context/AppContext';
 
 const Profile = ({ view = "" }) => {
     const { id } = useParams();
-    const currentUser = useRef(null);
 
-    const cookie = Cookies.get('user')
-    if (typeof cookie != 'undefined') {
-        currentUser.current = JSON.parse(cookie);
-    }
+    const context = useContext(AppContext)
+    const currentUser = JSON.parse(context.user)
 
     const [isFollowing, setIsFollowing] = useState(null);
     const [isDisabled, setIsDisabled] = useState(true);
@@ -25,22 +22,16 @@ const Profile = ({ view = "" }) => {
     const handleFollow = () => {
         setIsDisabled(true)
         if (isFollowing) {
-            BASEAPI.delete(`followers/${currentUser.current.id}/${user.id}`)
-                .finally(() => {
-                    setIsFollowing((prevIsFollow) => !prevIsFollow)
-                    setIsDisabled(false)
-                })
+            UserService.unfollowUser(currentUser, user, () => {
+                setIsFollowing((prevIsFollow) => !prevIsFollow)
+                setIsDisabled(false)
+            })
         }
         else {
-            const formData = new FormData();
-
-            formData.append('user_id', currentUser.current.id);
-            formData.append('following_id', user.id);
-            BASEAPI.post('followers', formData)
-                .finally(() => {
-                    setIsFollowing((prevIsFollow) => !prevIsFollow)
-                    setIsDisabled(false)
-                })
+            UserService.followUser(currentUser, user, () => {
+                setIsFollowing((prevIsFollow) => !prevIsFollow)
+                setIsDisabled(false)
+            })
         }
 
     }
@@ -70,7 +61,7 @@ const Profile = ({ view = "" }) => {
                             </div>
                         </div>
                         {
-                            parseInt(id) !== currentUser.current.id &&
+                            parseInt(id) !== currentUser.id &&
                             <button className="btn btn-primary mt-8 w-7/12" disabled={isFollowing == null || isDisabled} onClick={() => handleFollow()}>
                                 {isFollowing ? "Unfollow" : "Follow"}
                             </button>
@@ -85,11 +76,11 @@ const Profile = ({ view = "" }) => {
     }
 
     useEffect(() => {
-        currentUser.current != null &&
+        currentUser != null &&
             UserService.getUser(id)
                 .then((response) => {
                     setUser(response.data.user)
-                    const followData = response.data.user.followers.find((user) => user.id === currentUser.current.id)
+                    const followData = response.data.user.followers.find((user) => user.id === currentUser.id)
                     if (typeof followData === 'undefined' || followData === null) {
                         setIsFollowing(false)
                     }
@@ -103,7 +94,7 @@ const Profile = ({ view = "" }) => {
     return (
         <div className="text-black flex-1 w-10/12 m-auto">
             {
-                currentUser.current != null &&
+                currentUser != null &&
                 <>
                     <div className="inline-block align-top w-4/12 p-10">
                         {displayPage()}

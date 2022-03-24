@@ -3,11 +3,8 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import BASEAPI from '../../api/baseApi';
 import Divider from '../../components/Divider'
-import { AppContext } from '../../context/AppContext';
 
 const WordEdit = () => {
-    const context = React.useContext(AppContext)
-    const [currentUser, setCurrentUser] = context.user
 
     const navigate = useNavigate();
     const { lessonSlug, wordId } = useParams()
@@ -78,14 +75,7 @@ const WordEdit = () => {
         formData.append('choices[2]', choice3)
         formData.append('choices[3]', choice4)
         formData.append('correct_answer', answer)
-        BASEAPI.post(`words/${wordId}/?_method=PUT`,
-            formData,
-            {
-                headers: {
-                    'Authorization': `Bearer ${currentUser.token}`,
-                }
-            }
-        )
+        BASEAPI.post(`words/${wordId}/?_method=PUT`, formData)
             .then((response) => {
                 console.log(response.data)
                 navigate(-1)

@@ -1,16 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
 import Divider from '../../components/Divider';
-import Cookies from 'js-cookie'
 import useUserActivityView from '../../hooks/useUserActivityView';
+import { AppContext } from '../../context/AppContext';
 
 const Dashboard = ({ view = "" }) => {
-    const cookieString = Cookies.get('user')
-    let user = null
-    if (typeof cookieString != 'undefined') {
-        user = JSON.parse(cookieString)
-    }
+    const context = useContext(AppContext)
+    const user = JSON.parse(context.user);
 
     const display = useUserActivityView(view, user, true)
 

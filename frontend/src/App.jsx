@@ -1,12 +1,9 @@
 import './App.css';
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
 import { AppContext } from './context/AppContext';
-import useLocalStorage from './hooks/useLocalStorage';
 import NavBar from './components/NavBar';
 import NoView from './views/NoView';
 import Dashboard from './views/dashboard/Dashboard';
-import Activities from './components/Activities';
-import WordsLearned from './components/WordsLearned';
 import Categories from './views/categories/Categories';
 import Profile from './views/profile/Profile';
 import Lessons from './views/lessons/Lessons';
@@ -19,13 +16,14 @@ import LessonEdit from './views/admin/LessonEdit';
 import WordsEdit from './views/admin/WordsEdit';
 import WordEdit from './views/admin/WordEdit';
 import WordAdd from './views/admin/WordAdd';
+import useCookie from './hooks/useCookie';
 
 function App() {
-  const [currentUser, setCurrentUser] = useLocalStorage("user", "");
+  const [user, setUser] = useCookie("user");
 
   return (
     <div className="flex flex-col h-screen w-screen bg-white">
-      <AppContext.Provider value={{user: [currentUser, setCurrentUser]}}>
+      <AppContext.Provider value={{user: user, setUser: setUser}}>
         <BrowserRouter>
           <NavBar />
           <Routes>

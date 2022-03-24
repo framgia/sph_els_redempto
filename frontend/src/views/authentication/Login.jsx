@@ -1,35 +1,23 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import BASEAPI from '../../api/baseApi'
+import UserService from '../../api/userService'
 import { AppContext } from '../../context/AppContext'
-import Cookies from 'js-cookie'
 
 const Login = () => {
+    const context = useContext(AppContext)
+    const setUser = context.setUser;
     const navigate = useNavigate();
-    const context = React.useContext(AppContext)
-    const [currentUser, setCurrentUser] = context.user
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const formData = new FormData();
-        formData.append('user_name', username);
-        formData.append('password', password);
-        
-        BASEAPI.post("login", formData)
-            .then((response => {
-                if (response.status === 201) {
-                    setCurrentUser(response.data)
-                    Cookies.set('user', JSON.stringify(response.data.user))
-                    Cookies.set('token', response.data.token)
-                    navigate("/");
-                }
-            }))
-
-        setUsername("")
-        setPassword("")
+        UserService.login(username, password, setUser, () => {
+            setUsername("")
+            setPassword("")
+            navigate("/");
+        })
     }
 
 
