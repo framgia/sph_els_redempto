@@ -13,11 +13,11 @@ const Users = () => {
 
     return (
         <div className="text-black flex-1 w-10/12 m-auto mt-10">
-            <span className="text-2xl">Users</span>
+            <span className="text-2xl font-bold">Users</span>
             <Divider />
             <div className="w-full mt-5 h-most overflow-auto no-scrollbar">
                 {
-                    userList.map((user) => <UserItem user={user}/>)
+                    userList.map((user) => <UserItem key={user.id} user={user}/>)
                 }
             </div>
         </div>

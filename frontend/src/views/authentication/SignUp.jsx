@@ -25,7 +25,7 @@ const SignUp = () => {
         formData.append('password_confirmation', cPassword);
 
         UserService.signup(formData, setUser, () => {
-            navigate("/");
+            navigate("/dashboard/activity");
         })
     }
 

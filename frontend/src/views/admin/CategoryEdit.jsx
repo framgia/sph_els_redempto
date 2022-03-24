@@ -2,7 +2,6 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AdminService from '../../api/adminService';
-import BASEAPI from '../../api/baseApi';
 import CategoryService from '../../api/categoryService';
 import Divider from '../../components/Divider'
 
