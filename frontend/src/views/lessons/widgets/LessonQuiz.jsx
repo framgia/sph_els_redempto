@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import BASEAPI from '../../../api/baseApi'
 import LessonItem from './LessonItem';
-import Cookies from 'js-cookie'
 import UserService from '../../../api/userService';
+import { AppContext } from '../../../context/AppContext';
 
 const LessonQuiz = () => {
-    const currentUser = JSON.parse(Cookies.get('user'))
+    const context = useContext(AppContext);
+    const currentUser =  JSON.parse(context.user)
     const navigate = useNavigate();
     const { lessonSlug } = useParams()
 

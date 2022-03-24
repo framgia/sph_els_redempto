@@ -67,5 +67,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('followers', [FollowerController::class, 'store']);
     Route::delete('followers/{userId}/{followingId}', [FollowerController::class, 'destroy']);
 
+    Route::post('/users/{user}', [UserController::class, 'update']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });

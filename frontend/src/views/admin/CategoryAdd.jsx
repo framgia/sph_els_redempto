@@ -26,7 +26,7 @@ const CategoryAdd = () => {
     }
 
     return (
-        <div className="flex-1 w-fulltext-black item">
+        <div className="flex-1 w-full text-black item">
             <div className="h-full flex flex-col w-8/12 m-auto text-black p-4">
                 <div className="flex justify-between items-center">
                     <span className="text-2xl font-bold">Add Category</span>

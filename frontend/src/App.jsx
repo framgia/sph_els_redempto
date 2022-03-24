@@ -17,6 +17,7 @@ import WordsEdit from './views/admin/WordsEdit';
 import WordEdit from './views/admin/WordEdit';
 import WordAdd from './views/admin/WordAdd';
 import useCookie from './hooks/useCookie';
+import EditProfile from './views/profile/EditProfile';
 
 function App() {
   const [user, setUser] = useCookie("user");
@@ -35,6 +36,7 @@ function App() {
               <Route path=":lessonSlug/quiz" element={<LessonQuiz />} />
             </Route>
 
+            <Route path="users/:id/edit" element={<EditProfile/>}/>
             <Route path="users/:id/activity" element={<Profile view = "activity"/>}/>
             <Route path="users/:id/history" element={<Profile view = "history"/>}/>
 

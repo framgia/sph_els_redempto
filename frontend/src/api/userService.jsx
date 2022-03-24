@@ -17,11 +17,18 @@ const UserService = {
     getAllAttempts: () => {
         return BASEAPI.get('/attempts')
     },
-    postAnswers: (formData, callback = () => {}) => {
+    updateUser: (userId, formData, setUser, callback = () => { }) => {
+        return BASEAPI.post(`/users/${userId}`, formData)
+            .then((response)=>{
+                setUser(JSON.stringify(response.data.user)) 
+            })
+            .finally(callback)
+    },
+    postAnswers: (formData, callback = () => { }) => {
         BASEAPI.post(`attempts`, formData)
             .finally(callback)
     },
-    followUser: (user, following, callback = () => {}) => {
+    followUser: (user, following, callback = () => { }) => {
         const formData = new FormData();
 
         formData.append('user_id', user.id);
@@ -29,7 +36,7 @@ const UserService = {
         BASEAPI.post('followers', formData)
             .finally(callback)
     },
-    unfollowUser: (user, following, callback = () => {}) => {
+    unfollowUser: (user, following, callback = () => { }) => {
         BASEAPI.delete(`followers/${user.id}/${following.id}`)
             .finally(callback)
     },
@@ -41,7 +48,7 @@ const UserService = {
                 Cookies.set('user', userData)
                 Cookies.set('token', response.data.token)
             })
-            .finall(callback)
+            .finally(callback)
     },
     login: (username, password, setUser = () => { }, callback = () => { }) => {
         const formData = new FormData();
@@ -67,6 +74,10 @@ const UserService = {
                 setUser(null)
             })
             .finally(callback);
+    },
+    isLoggedIn: () => {
+        if (Cookies.get('user')) return true;
+        return false;
     }
 }
 

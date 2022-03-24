@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import UserService from '../api/userService'
 
 const NavBar = () => {
     const context = useContext(AppContext);
-    const user = context.user;
+    const user = JSON.parse(context.user);
     const setUser = context.setUser;
     const navigate = useNavigate();
 
@@ -35,8 +35,10 @@ const NavBar = () => {
                             <Link to="/sign-up" className="btn-ghost p-5 btn-lg">Sign Up</Link>
                             <Link to="/login" className="btn-ghost p-5 btn-lg">Login</Link>
                         </div> :
-
-                        <button onClick={handleLogout} className="btn-ghost p-5 btn-lg">Logout</button>
+                        <>
+                            <Link to={`/users/${user.id}/activity`} className="btn-ghost p-5 btn-lg">{user.full_name}</Link>
+                            <button onClick={handleLogout} className="btn-ghost p-5 btn-lg">Logout</button>
+                        </>
                 }
 
             </div>

@@ -23,6 +23,7 @@ class AuthController extends Controller
             'user_name' => $field['user_name'],
             'email' => $field['email'],
             'password' => bcrypt($field['password']),
+            'profile_pic_path' => null,
         ]);
 
         $token = $user->createToken('admin_token')->plainTextToken;

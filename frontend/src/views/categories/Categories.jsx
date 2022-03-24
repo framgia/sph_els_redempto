@@ -1,19 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEffect, useState } from 'react';
 import BASEAPI from '../../api/baseApi';
 import { Link } from 'react-router-dom';
 import Divider from '../../components/Divider';
 import CategoryItem from './widgets/CategoryItem';
-import Cookies from 'js-cookie'
+import { AppContext } from '../../context/AppContext';
 
 const Categories = () => {
     const [categoryList, setCategoryList] = useState([]);
 
-    let currentUser = null;
-    const cookie = Cookies.get('user')
-    if (typeof cookie != 'undefined') {
-        currentUser = JSON.parse(cookie);
-    }
+    const context = useContext(AppContext)
+    const currentUser = JSON.parse(context.user)
 
     useEffect(() => {
         BASEAPI.get("categories")
