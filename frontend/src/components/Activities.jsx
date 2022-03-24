@@ -24,7 +24,7 @@ const Activities = ({ user = null, followersOnly = false }) => {
 
   return (
     <div className="inline-block align-top h-full w-8/12 p-10 box-sizing">
-      <span className="text-2xl">Activities</span>
+      <span className="text-2xl">{(followersOnly && "Follow Feed") || "Activities"}</span>
       <Divider />
       <div className="w-full mt-5 h-most overflow-auto no-scrollbar">
         {

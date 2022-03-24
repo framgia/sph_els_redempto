@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import UserService from '../api/userService'
+import Avatar from './Avatar'
 
 const NavBar = () => {
     const context = useContext(AppContext);
@@ -19,7 +20,7 @@ const NavBar = () => {
         <div className="navbar bg-blue-400 p-0">
             <div className="navbar-start">
                 <span className='text-3xl font-bold ml-2'>
-                    <Link to="/" className=''>E-Learning System</Link>
+                    <Link to="/dashboard/activity" className=''>E-Learning System</Link>
                 </span>
                 <div className="divider divider-horizontal"></div>
                 <span className='text-xl font-bold'>
@@ -37,7 +38,9 @@ const NavBar = () => {
                             <Link to="/login" className="btn-ghost p-5 btn-lg">Login</Link>
                         </div> :
                         <>
-                            <Link to={`/users/${user.id}/activity`} className="btn-ghost p-5 btn-lg">{user.full_name}</Link>
+                            <Link to={`/users/${user.id}/activity`} className="btn-ghost p-5 btn-lg flex items-center">
+                                <Avatar className="w-12 inline-block pr-2" user={user} />{user.full_name}
+                            </Link>
                             <button onClick={handleLogout} className="btn-ghost p-5 btn-lg">Logout</button>
                         </>
                 }

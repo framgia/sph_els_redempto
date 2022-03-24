@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import UserService from '../../api/userService';
 import Avatar from '../../components/Avatar';
 import Divider from '../../components/Divider';
@@ -8,10 +8,10 @@ import { AppContext } from '../../context/AppContext';
 
 
 const EditProfile = () => {
+    const { id } = useParams();
     const context = useContext(AppContext)
     const user = useRef(JSON.parse(context.user))
     const setUser = context.setUser;
-
     const [inputProfilePic, setInputProfilePic] = useState(null)
     const [inputFullName, setInputFullName] = useState("")
     const [inputEmail, setInputEmail] = useState("")
@@ -37,10 +37,11 @@ const EditProfile = () => {
 
     useEffect(() => {
         if (user.current == null) return
-        
+        if (user.current.id !== parseInt(id)) navigate(`/users/${user.current.id}/edit`)
+
         setInputFullName(user.current.full_name)
         setInputEmail(user.current.email)
-    }, [])
+    }, [id, navigate])
 
     return (
         <div className="text-black flex-1 w-10/12 m-auto mt-10">

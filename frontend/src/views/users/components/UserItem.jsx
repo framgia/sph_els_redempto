@@ -10,9 +10,6 @@ function UserItem({ user = null }) {
                 <div>
                     <Link to={`/users/${user.id}/activity`}><span className="text-red font-bold text-2xl">{user.full_name}</span> </Link>
                 </div>
-                <div>
-                    {/* <span className="text-gray-500 font-bold">{DateHelper.howLongSince(Date.parse(attempt.date_finished))}</span> */}
-                </div>
             </div>
         </div>
     )

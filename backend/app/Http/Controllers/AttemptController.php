@@ -75,7 +75,7 @@ class AttemptController extends Controller
 
     public function getAttemptsByUser($userId)
     {
-        $attempts = Attempt::with(['user', 'category'])->where('user_id', $userId)->get();
+        $attempts = Attempt::with(['user', 'category', 'answers'])->where('user_id', $userId)->get();
 
         return response()->json([
             'attempts' => $attempts,
@@ -101,7 +101,7 @@ class AttemptController extends Controller
 
     public function getAttemptsByFollowings($userId)
     {
-        $attemptList = Attempt::with(['user', 'category'])
+        $attemptList = Attempt::with(['user', 'category', 'answers'])
             ->whereHas('user.followers', function($query) use ($userId) {
                 $query->where('user_id', $userId);
             })->get();

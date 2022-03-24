@@ -16,7 +16,7 @@ const Login = () => {
         UserService.login(username, password, setUser, () => {
             setUsername("")
             setPassword("")
-            navigate("/");
+            navigate("/dashboard/activity");
         })
     }
 
