@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import BASEAPI from '../../api/baseApi';
+import AdminService from '../../api/adminService';
+import CategoryService from '../../api/categoryService';
 import Divider from '../../components/Divider'
 
 const WordEdit = () => {
@@ -17,7 +18,7 @@ const WordEdit = () => {
     const [choice4, setChoice4] = useState("")
 
     useEffect(() => {
-        BASEAPI.get(`words/${wordId}`)
+        CategoryService.getWord(wordId)
             .then(response => {
                 const wordSelected = response.data.word
                 setWordInput(wordSelected.word)
@@ -30,7 +31,7 @@ const WordEdit = () => {
     }, [lessonSlug, wordId])
 
     useEffect(() => {
-        BASEAPI.get(`categories/${lessonSlug}`)
+        CategoryService.getCategory(lessonSlug)
             .then(response => {
                 const data = response.data.category
                 setLesson(data)
@@ -75,12 +76,10 @@ const WordEdit = () => {
         formData.append('choices[2]', choice3)
         formData.append('choices[3]', choice4)
         formData.append('correct_answer', answer)
-        BASEAPI.post(`words/${wordId}/?_method=PUT`, formData)
-            .then((response) => {
-                console.log(response.data)
-                navigate(-1)
-            })
-            .catch((error) => console.log(error))
+
+        AdminService.updateWord(wordId, formData, () => {
+            navigate(-1)
+        })
     }
 
     return (

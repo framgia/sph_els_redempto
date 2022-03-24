@@ -1,14 +1,16 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import AdminService from '../../api/adminService';
 import BASEAPI from '../../api/baseApi';
+import CategoryService from '../../api/categoryService';
 import Divider from '../../components/Divider'
 
 const CategoryEdit = () => {
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
-        BASEAPI.get("categories")
+        CategoryService.getCategories()
             .then((response) => {
                 setCategoryList(response.data.categories)
             })
@@ -22,8 +24,7 @@ const CategoryEdit = () => {
     }
 
     const handleDelete = (event, category) => {
-        BASEAPI.delete(`categories/${category.slug}`,)
-        .then(response => {
+        AdminService.deleteCategory(category.slug, ()=> {
             setCategoryList(prevList=>prevList.filter(prevCategory => prevCategory.id !== category.id))
         })
     }

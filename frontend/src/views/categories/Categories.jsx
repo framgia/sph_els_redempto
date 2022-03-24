@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import { useEffect, useState } from 'react';
-import BASEAPI from '../../api/baseApi';
 import { Link } from 'react-router-dom';
 import Divider from '../../components/Divider';
 import CategoryItem from './widgets/CategoryItem';
 import { AppContext } from '../../context/AppContext';
+import CategoryService from '../../api/categoryService';
 
 const Categories = () => {
     const [categoryList, setCategoryList] = useState([]);
@@ -13,7 +13,7 @@ const Categories = () => {
     const currentUser = JSON.parse(context.user)
 
     useEffect(() => {
-        BASEAPI.get("categories")
+        CategoryService.getCategories()
             .then((response) => {
                 setCategoryList(response.data.categories)
             })

@@ -8,12 +8,18 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    public function index() {
+        return response()->json([
+            'users' => User::all(),
+        ], 201);
+    }
+
     public function show($userId) {
         $user = User::with(['followers', 'following'])->where('id', $userId)->get()->first();
         
         return response()->json([
             'user' => $user,
-        ]);
+        ], 201);
     }
 
     public function update(Request $request, User $user) {

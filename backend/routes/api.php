@@ -23,51 +23,76 @@ use App\Http\Controllers\UserController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/categories/{category:slug}', [CategoryController::class, 'showCategoryBySlug']);
-Route::get('/categories/{category:slug}/words', [WordController::class, 'getWordsBySlug']);
 
-Route::get('/words', [WordController::class, 'index']);
-Route::get('/words/{word}', [WordController::class, 'show']);
 
-Route::get('/attempts', [AttemptController::class, 'index']);
-Route::get('/attempts/{attempt}', [AttemptController::class, 'show']);
-Route::get('/attempts/{attempt}/answers', [AnswerController::class, 'getAnswersByAttempt']);
-Route::get('/attempts/{attempt}/answers/{wordId}', [AnswerController::class, 'getAnswerByAttemptAndWord']);
+Route::prefix('categories')->group(function() {
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::get('/{category:slug}', [CategoryController::class, 'showCategoryBySlug']);
+    Route::get('/{category:slug}/words', [WordController::class, 'getWordsBySlug']);
+});
 
-Route::get('/answers', [AnswerController::class, 'index']);
-Route::get('/answers/{answer}/category', [AnswerController::class, 'getCategory']);
+Route::prefix('words')->group(function() {
+    Route::get('/', [WordController::class, 'index']);
+    Route::get('/{word}', [WordController::class, 'show']);
+});
 
-Route::get('/users/{userId}', [UserController::class, 'show']);
-Route::get('/users/{userId}/attempts', [AttemptController::class, 'getAttemptsByUser']);
-Route::get('/users/{userId}/answers', [AnswerController::class, 'getAnswersByUser']);
-Route::get('/users/{userId}/attempts/{category:slug}', [AttemptController::class, 'getAttemptBySlugAndId']);
-Route::get('/users/{userId}/followings/attempts', [AttemptController::class, 'getAttemptsByFollowings']);
+Route::prefix('attempts')->group(function() {
+    Route::get('/', [AttemptController::class, 'index']);
+    Route::get('/{attempt}', [AttemptController::class, 'show']);
+    Route::get('/{attempt}/answers', [AnswerController::class, 'getAnswersByAttempt']);
+    Route::get('/{attempt}/answers/{wordId}', [AnswerController::class, 'getAnswerByAttemptAndWord']);
+});
+
+Route::prefix('answers')->group(function() {
+    Route::get('/', [AnswerController::class, 'index']);
+    Route::get('/{answer}/category', [AnswerController::class, 'getCategory']);
+});
+
+Route::prefix('users')->group(function() {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/{userId}', [UserController::class, 'show']);
+    Route::get('/{userId}/attempts', [AttemptController::class, 'getAttemptsByUser']);
+    Route::get('/{userId}/answers', [AnswerController::class, 'getAnswersByUser']);
+    Route::get('/{userId}/attempts/{category:slug}', [AttemptController::class, 'getAttemptBySlugAndId']);
+    Route::get('/{userId}/followings/attempts', [AttemptController::class, 'getAttemptsByFollowings']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('/categories', [CategoryController::class, 'store']);
-    Route::put('/categories/{category:slug}', [CategoryController::class, 'updateCategoryBySlug']);
-    Route::delete('categories/{category:slug}', [CategoryController::class, 'destroyCategoryBySlug']);
-
-    Route::post('/words', [WordController::class, 'store']);
-    Route::put('/words/{word}', [WordController::class, 'update']);
-    Route::delete('/words/{word}', [WordController::class, 'destroy']);
-
-    Route::post('/attempts', [AttemptController::class, 'store']);
-    Route::put('/attempts/{attempt}', [AttemptController::class, 'store']);
-    Route::delete('/attempts/{attempt}', [AttemptController::class, 'destroy']);
-
-    Route::post('/answers', [AnswerController::class, 'store']);
-    Route::delete('/answers/{answer}', [AnswerController::class, 'destroy']);
+    Route::prefix('categories')->group(function() {
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::put('/{category:slug}', [CategoryController::class, 'updateCategoryBySlug']);
+        Route::delete('/{category:slug}', [CategoryController::class, 'destroyCategoryBySlug']);
+    });
     
-    Route::post('followers', [FollowerController::class, 'store']);
-    Route::delete('followers/{userId}/{followingId}', [FollowerController::class, 'destroy']);
+    Route::prefix('words')->group(function() {
+        Route::post('/', [WordController::class, 'store']);
+        Route::put('/{word}', [WordController::class, 'update']);
+        Route::delete('/{word}', [WordController::class, 'destroy']);
+    });
 
-    Route::post('/users/{user}', [UserController::class, 'update']);
+    Route::prefix('attempts')->group(function() {
+        Route::post('/', [AttemptController::class, 'store']);
+        Route::put('/{attempt}', [AttemptController::class, 'store']);
+        Route::delete('/{attempt}', [AttemptController::class, 'destroy']);
+    });
+
+    Route::prefix('answers')->group(function() {
+        Route::post('/', [AnswerController::class, 'store']);
+        Route::delete('/{answer}', [AnswerController::class, 'destroy']);
+    });
+    
+    Route::prefix('followers')->group(function() {
+        Route::post('/', [FollowerController::class, 'store']);
+        Route::delete('/{userId}/{followingId}', [FollowerController::class, 'destroy']);
+    });
+
+    Route::prefix('users')->group(function() {
+        Route::post('/{user}', [UserController::class, 'update']);
+    });
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

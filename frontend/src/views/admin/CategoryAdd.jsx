@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import BASEAPI from '../../api/baseApi'
+import AdminService from '../../api/adminService'
 import Divider from '../../components/Divider'
 
 const CategoryAdd = () => {
@@ -18,11 +18,10 @@ const CategoryAdd = () => {
         formData.append('title', lessonTitle)
         formData.append('slug', lessonSlug)
         formData.append('description', lessonDescription)
-        BASEAPI.post("categories",formData,)
-            .then((response) => {
-                navigate(-1)
-            })
-            .catch((error) => console.log(error))
+
+        AdminService.addCategory(formData, () => {
+            navigate(-1)
+        })
     }
 
     return (
