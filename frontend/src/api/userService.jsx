@@ -22,8 +22,8 @@ const UserService = {
     },
     updateUser: (userId, formData, setUser, callback = () => { }) => {
         return BASEAPI.post(`/users/${userId}`, formData)
-            .then((response)=>{
-                setUser(JSON.stringify(response.data.user)) 
+            .then((response) => {
+                setUser(JSON.stringify(response.data.user))
             })
             .finally(callback)
     },
@@ -43,17 +43,20 @@ const UserService = {
         BASEAPI.delete(`followers/${user.id}/${following.id}`)
             .finally(callback)
     },
-    signup: (formData, setUser = () => { }, callback = () => { }) => {
+    signup: (formData, setUser = () => { }, errorHandle = () => {}, callback = () => { }) => {
         BASEAPI.post("register", formData)
             .then((response) => {
-                const userData = JSON.stringify(response.data.user)
-                setUser(userData)
-                Cookies.set('user', userData)
-                Cookies.set('token', response.data.token)
+                if (response.status === 201) {
+                    const userData = JSON.stringify(response.data.user)
+                    setUser(userData)
+                    Cookies.set('user', userData)
+                    Cookies.set('token', response.data.token)
+                }
             })
+            .catch(errorHandle)
             .finally(callback)
     },
-    login: (username, password, setUser = () => { }, callback = () => { }) => {
+    login: (username, password, setUser = () => { }, exceptionHandle = () => {}, callback = () => { }) => {
         const formData = new FormData();
         formData.append('user_name', username);
         formData.append('password', password);
@@ -67,6 +70,7 @@ const UserService = {
                     Cookies.set('token', response.data.token)
                 }
             }))
+            .catch(exceptionHandle)
             .finally(callback);
     },
     logout: (setUser = () => { }, callback = () => { }) => {

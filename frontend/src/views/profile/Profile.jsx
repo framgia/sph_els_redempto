@@ -15,6 +15,7 @@ const Profile = ({ view = "" }) => {
     const [isFollowing, setIsFollowing] = useState(null);
     const [isDisabled, setIsDisabled] = useState(true);
     const [user, setUser] = useState(null)
+    const [wordsLearned, setWordsLearned] = useState(0)
 
     const display = useUserActivityView(view, user);
 
@@ -34,6 +35,15 @@ const Profile = ({ view = "" }) => {
         }
 
     }
+
+    useEffect(()=> {
+        if (currentUser.current == null) return
+    
+        UserService.getUserAnswers(currentUser.current.id)
+          .then(response => {
+            setWordsLearned(response.data.answers.length)
+          })
+    }, [])
 
     const displayPage = () => {
         return (
@@ -65,7 +75,7 @@ const Profile = ({ view = "" }) => {
                                 {isFollowing ? "Unfollow" : "Follow"}
                             </button>
                         }
-                        <Link to={`/users/${id}/history`}><span className="text-blue-700 block mt-5">Learned 20 words</span></Link>
+                        <Link to={`/users/${id}/history`}><span className="text-blue-700 block mt-5">Learned {wordsLearned} words</span></Link>
                         {
                             currentUser.current != null && parseInt(id) === currentUser.current.id &&
                             <Link to={`/users/${id}/edit`} className="btn btn-ghost text-blue-800 w-7/12" disabled={isFollowing == null || isDisabled}>

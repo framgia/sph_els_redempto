@@ -16,6 +16,7 @@ const WordEdit = () => {
     const [choice2, setChoice2] = useState("")
     const [choice3, setChoice3] = useState("")
     const [choice4, setChoice4] = useState("")
+    const [disableSubmit, setDisableSubmit] = useState(true);
 
     useEffect(() => {
         CategoryService.getWord(wordId)
@@ -27,6 +28,7 @@ const WordEdit = () => {
                 setChoice2(wordSelected.choices[1])
                 setChoice3(wordSelected.choices[2])
                 setChoice4(wordSelected.choices[3])
+                setDisableSubmit(false)
             })
     }, [lessonSlug, wordId])
 
@@ -110,7 +112,7 @@ const WordEdit = () => {
                     {radioButton(choice3, setChoice3)}
                     {radioButton(choice4, setChoice4)}
                     <div className="flex justify-end mt-4">
-                        <input type="submit" value="Submit" className="btn" />
+                        <input type="submit" value="Submit" className={`btn ${disableSubmit &&'btn-disabled'}`} />
                     </div>
                 </form>
             </div>

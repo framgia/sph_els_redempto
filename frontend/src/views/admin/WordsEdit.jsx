@@ -10,12 +10,14 @@ const WordsEdit = () => {
     const { lessonSlug } = useParams()
     const [lesson, setLesson] = useState([])
     const [words, setWords] = useState([])
+    const [disableSubmit, setDisableSubmit] = useState(true);
 
     useEffect(() => {
         CategoryService.getCategoryWords(lessonSlug)
             .then(response => {
                 setLesson(response.data.category)
                 setWords(response.data.words)
+                setDisableSubmit(false)
             })
     }, [lessonSlug])
 

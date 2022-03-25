@@ -56,38 +56,46 @@ const AppRoutes = () => {
 
             <Route path="categories" element={<Categories />} />
             <Route path="categories/add" element={
-                <ProtectedRoute user={user} isAllowed={user != null  && user.is_admin} redirectPath="/categories">
+                <ProtectedRoute user={user} isAllowed={user != null && user.is_admin} redirectPath="/categories">
                     <CategoryAdd />
                 </ProtectedRoute>
             } />
             <Route path="categories/edit" element={
-                <ProtectedRoute user={user} isAllowed={user != null  && user.is_admin} redirectPath="/categories">
+                <ProtectedRoute user={user} isAllowed={user != null && user.is_admin} redirectPath="/categories">
                     <CategoryEdit />
                 </ProtectedRoute>
             } />
             <Route path="categories/edit/:lessonSlug" element={
-                <ProtectedRoute user={user} isAllowed={user != null  && user.is_admin} redirectPath="/categories">
+                <ProtectedRoute user={user} isAllowed={user != null && user.is_admin} redirectPath="/categories">
                     <LessonEdit />
                 </ProtectedRoute>
             } />
             <Route path="categories/edit/:lessonSlug/words" element={
-                <ProtectedRoute user={user} isAllowed={user != null  && user.is_admin} redirectPath="/categories">
+                <ProtectedRoute user={user} isAllowed={user != null && user.is_admin} redirectPath="/categories">
                     <WordsEdit />
                 </ProtectedRoute>
             } />
             <Route path="categories/edit/:lessonSlug/words/add" element={
-                <ProtectedRoute user={user} isAllowed={user != null  && user.is_admin} redirectPath="/categories">
+                <ProtectedRoute user={user} isAllowed={user != null && user.is_admin} redirectPath="/categories">
                     <WordAdd />
                 </ProtectedRoute>
             } />
             <Route path="categories/edit/:lessonSlug/words/:wordId" element={
-                <ProtectedRoute user={user} isAllowed={user != null  && user.is_admin} redirectPath="/categories">
+                <ProtectedRoute user={user} isAllowed={user != null && user.is_admin} redirectPath="/categories">
                     <WordEdit />
                 </ProtectedRoute>
             } />
 
-            <Route path="sign-up" element={<SignUp />} />
-            <Route path="login" element={<Login />} />
+            <Route path="sign-up" element={
+                <ProtectedRoute user={user} isAllowed={user == null} redirectPath="/dashboard/activity">
+                    <SignUp />
+                </ProtectedRoute>
+            } />
+            <Route path="login" element={
+                <ProtectedRoute user={user} isAllowed={user == null} redirectPath="/dashboard/activity">
+                    <Login />
+                </ProtectedRoute>
+            } />
             <Route path="*" element={<NoView />} />
         </Routes>
     )
