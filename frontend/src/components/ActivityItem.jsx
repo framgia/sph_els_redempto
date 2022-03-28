@@ -9,7 +9,7 @@ function ActivityItem({ attempt = null }) {
             <div className="inline-block w-5/6 ml-4 mt-3">
                 <div>
                     <Link to={`../../users/${attempt.user.id}/activity`}><span className="text-red font-bold">{attempt.user.full_name}</span> </Link>
-                    learned {attempt.score}/{attempt.answers.length} words in <span className="text-red font-bold">{attempt.category.title}</span>
+                    scored {attempt.score}/{attempt.answers.length} in <span className="text-red font-bold">{attempt.category.title}</span>
                 </div>
                 <div>
                     <span className="text-gray-500 font-bold">{DateHelper.howLongSince(Date.parse(attempt.date_finished))}</span>

@@ -11,6 +11,7 @@ const LessonEdit = () => {
     const [lessonTitle, setLessonTitle] = useState("")
     const [lessonSlugText, setLessonSlugText] = useState("")
     const [lessonDescription, setLessonDescription] = useState("")
+    const [disableSubmit, setDisableSubmit] = useState(true);
 
     const { lessonSlug } = useParams()
     useEffect(() => {
@@ -21,6 +22,7 @@ const LessonEdit = () => {
                 setLessonTitle(data.title)
                 setLessonSlugText(data.slug)
                 setLessonDescription(data.description)
+                setDisableSubmit(false)
             })
     }, [lessonSlug])
 
@@ -78,7 +80,7 @@ const LessonEdit = () => {
                         }}>
                     </textarea>
                     <div className="flex justify-end mt-4">
-                        <input type="submit" value="Submit" className="btn" />
+                        <input type="submit" value="Submit" className={`btn ${disableSubmit &&'btn-disabled'}`} />
                     </div>
                 </form>
             </div>
