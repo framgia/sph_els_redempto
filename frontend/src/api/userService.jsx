@@ -2,23 +2,23 @@ import Cookies from 'js-cookie'
 import BASEAPI from './baseApi'
 
 const UserService = {
-    getUser: (userId) => {
-        return BASEAPI.get(`/users/${userId}`)
+    getUser: (userId, headers = {}) => {
+        return BASEAPI.get(`/users/${userId}`, headers)
     },
-    getUsers: () => {
-        return BASEAPI.get(`/users`)
+    getUsers: (headers = {}) => {
+        return BASEAPI.get(`/users`, headers)
     },
-    getUserActivity: (userId) => {
-        return BASEAPI.get(`/users/${userId}/attempts`)
+    getUserActivity: (userId, headers = {}) => {
+        return BASEAPI.get(`/users/${userId}/attempts`, headers)
     },
-    getUserAnswers: (userId) => {
-        return BASEAPI.get(`/users/${userId}/answers`)
+    getUserAnswers: (userId, headers = {}) => {
+        return BASEAPI.get(`/users/${userId}/answers`, headers)
     },
-    getFollowerActivity: (userId) => {
-        return BASEAPI.get(`/users/${userId}/followings/attempts`)
+    getFollowerActivity: (userId, headers = {}) => {
+        return BASEAPI.get(`/users/${userId}/followings/attempts`, headers)
     },
-    getAllAttempts: () => {
-        return BASEAPI.get('/attempts')
+    getAllAttempts: (headers = {}) => {
+        return BASEAPI.get('/attempts', headers)
     },
     updateUser: (userId, formData, setUser, callback = () => { }) => {
         return BASEAPI.post(`/users/${userId}`, formData)

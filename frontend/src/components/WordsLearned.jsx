@@ -8,12 +8,20 @@ const WordsLearned = ({ user = null }) => {
 
   useEffect(() => {
     if (user == null) return
+    const controller = new AbortController();
 
-    UserService.getUserAnswers(user.id)
+    UserService.getUserAnswers(user.id, {
+      signal: controller.signal
+    })
       .then(response => {
         setAttempts(response.data.attempts)
         setAnswers(response.data.answers)
       })
+      .catch((err) => { })
+
+    return () => {
+      controller.abort()
+    }
   }, [user])
 
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import AdminService from '../../api/adminService';
@@ -6,20 +6,27 @@ import CategoryService from '../../api/categoryService';
 import Divider from '../../components/Divider';
 
 const WordsEdit = () => {
+    const controller = useMemo(() => new AbortController(), []);
 
     const { lessonSlug } = useParams()
     const [lesson, setLesson] = useState([])
     const [words, setWords] = useState([])
-    const [disableSubmit, setDisableSubmit] = useState(true);
 
     useEffect(() => {
-        CategoryService.getCategoryWords(lessonSlug)
+        CategoryService.getCategoryWords(lessonSlug, {
+            signal: controller.signal
+        })
             .then(response => {
                 setLesson(response.data.category)
                 setWords(response.data.words)
-                setDisableSubmit(false)
             })
-    }, [lessonSlug])
+            .catch((err) => {
+            })
+
+        return () => {
+            controller.abort()
+        }
+    }, [lessonSlug, controller])
 
     const [pageNo, setPageNo] = useState(0);
     const itemPerPage = 10;
@@ -29,9 +36,13 @@ const WordsEdit = () => {
     }
 
     const handleDelete = (event, word) => {
-        AdminService.deleteWord(word.id, () => {
-            setWords(prevList => prevList.filter(prevWord => prevWord.id !== word.id))
+        AdminService.deleteWord(word.id, {
+            signal: controller.signal
         })
+            .then(() => {
+                setWords(prevList => prevList.filter(prevWord => prevWord.id !== word.id))
+            })
+            .catch(() => { })
     }
 
     return (

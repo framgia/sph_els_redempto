@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AdminService from '../../api/adminService';
@@ -7,13 +7,21 @@ import Divider from '../../components/Divider'
 
 const CategoryEdit = () => {
     const [categoryList, setCategoryList] = useState([]);
+    const controller = useMemo(() => new AbortController(), []);
 
     useEffect(() => {
-        CategoryService.getCategories()
+        CategoryService.getCategories({
+            signal: controller.signal
+        })
             .then((response) => {
                 setCategoryList(response.data.categories)
             })
-    }, [])
+            .catch((err) => { })
+
+        return () => {
+            controller.abort()
+        }
+    }, [controller])
 
     const [pageNo, setPageNo] = useState(0);
     const itemPerPage = 10;
@@ -23,16 +31,19 @@ const CategoryEdit = () => {
     }
 
     const handleDelete = (event, category) => {
-        AdminService.deleteCategory(category.slug, ()=> {
-            setCategoryList(prevList=>prevList.filter(prevCategory => prevCategory.id !== category.id))
-        })
+        AdminService.deleteCategory(category.slug,
+            {
+                signal: controller.signal
+            })
+            .then(() => setCategoryList(prevList => prevList.filter(prevCategory => prevCategory.id !== category.id)))
+            .catch((err) => { })
     }
 
     return (
         <div className="flex-1 w-full text-black item">
             <div className="h-full w-8/12 m-auto text-black p-4 justify-around">
                 <div>
-                    <div className = "flex justify-between items-center">
+                    <div className="flex justify-between items-center">
                         <span className="text-2xl font-bold">Categories</span>
                         <Link to="/categories/add" className="btn btn-ghost text-blue-600">Add category</Link>
                     </div>

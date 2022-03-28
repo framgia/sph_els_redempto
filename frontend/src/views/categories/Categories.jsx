@@ -13,10 +13,19 @@ const Categories = () => {
     const currentUser = JSON.parse(context.user)
 
     useEffect(() => {
-        CategoryService.getCategories()
+        const controller = new AbortController();
+        CategoryService.getCategories({
+            signal: controller.signal
+        })
             .then((response) => {
                 setCategoryList(response.data.categories)
             })
+            .catch((err) => {
+            })
+
+        return () => {
+            controller.abort()
+        }
     }, [])
 
     return (

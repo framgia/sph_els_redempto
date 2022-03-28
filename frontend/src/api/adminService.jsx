@@ -1,26 +1,23 @@
 import BASEAPI from './baseApi'
 
 const AdminService = {
-    addCategory: (formData, callback = () => { }) => {
-        BASEAPI.post("categories", formData)
-            .finally(callback)
+    addCategory: (formData, headers = {}) => {
+        return BASEAPI.post("categories", formData, headers)
     },
-    deleteCategory: (categorySlug, callback = () => { }) => {
-        BASEAPI.delete(`categories/${categorySlug}`)
-            .finally(callback)
+    deleteCategory: (categorySlug, headers = {}) => {
+        return BASEAPI.delete(`categories/${categorySlug}`, headers)
     },
-    updateCategory: (lessonSlug, formData, callback = () => { }) => {
-        BASEAPI.post(`categories/${lessonSlug}/?_method=PUT`, formData)
-            .finally(callback)
+    updateCategory: (lessonSlug, formData, headers = {}) => {
+        return BASEAPI.post(`categories/${lessonSlug}/?_method=PUT`, formData, headers)
     },
-    deleteWord: (wordId, callback = () => { }) => {
-        BASEAPI.delete(`words/${wordId}`)
-            .finally(callback)
+    addWord: (formData, headers = {}) => {
+        return BASEAPI.post("words", formData, headers)
     },
-    updateWord: (wordId, formData, callback = () => { }) => {
-
-        BASEAPI.post(`words/${wordId}/?_method=PUT`, formData)
-            .finally(callback)
+    deleteWord: (wordId, headers = {}) => {
+        return BASEAPI.delete(`words/${wordId}`, headers)
+    },
+    updateWord: (wordId, formData, headers = {}) => {
+        return BASEAPI.post(`words/${wordId}/?_method=PUT`, formData, headers)
     }
 }
 
