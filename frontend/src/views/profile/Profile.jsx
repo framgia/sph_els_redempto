@@ -36,14 +36,48 @@ const Profile = ({ view = "" }) => {
 
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         if (currentUser.current == null) return
-    
-        UserService.getUserAnswers(currentUser.current.id)
-          .then(response => {
-            setWordsLearned(response.data.answers.length)
-          })
-    }, [])
+        const controller = new AbortController();
+
+        UserService.getUserAnswers(id, {
+            signal: controller.signal
+        })
+            .then(response => {
+                setWordsLearned(response.data.answers.length)
+            })
+            .catch((err) => { })
+
+        return () => {
+            controller.abort()
+        }
+    }, [id])
+
+    useEffect(() => {
+        setUser(null)
+        const controller = new AbortController();
+        UserService.getUser(id, {
+            signal: controller.signal
+        })
+            .then((response) => {
+                setUser(response.data.user)
+                if (currentUser.current != null) {
+                    const followData = response.data.user.followers.find((user) => user.id === currentUser.current.id)
+                    if (typeof followData === 'undefined' || followData === null) {
+                        setIsFollowing(false)
+                    }
+                    else {
+                        setIsFollowing(true)
+                    }
+                    setIsDisabled(false)
+                }
+            })
+            .catch((err) => { })
+
+        return () => {
+            controller.abort()
+        }
+    }, [id])
 
     const displayPage = () => {
         return (
@@ -89,23 +123,6 @@ const Profile = ({ view = "" }) => {
                 </div>)
         )
     }
-
-    useEffect(() => {
-        UserService.getUser(id)
-            .then((response) => {
-                setUser(response.data.user)
-                if (currentUser.current != null) {
-                    const followData = response.data.user.followers.find((user) => user.id === currentUser.current.id)
-                    if (typeof followData === 'undefined' || followData === null) {
-                        setIsFollowing(false)
-                    }
-                    else {
-                        setIsFollowing(true)
-                    }
-                    setIsDisabled(false)
-                }
-            });
-    }, [id])
 
     return (
         <div className="text-black flex-1 w-10/12 m-auto">

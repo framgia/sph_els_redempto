@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import UserService from '../../api/userService'
 import { AppContext } from '../../context/AppContext'
 
@@ -7,7 +6,6 @@ const SignUp = () => {
     const context = useContext(AppContext);
     const setUser = context.setUser;
 
-    const navigate = useNavigate();
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
@@ -43,16 +41,6 @@ const SignUp = () => {
                 else {
                     setErrorMessage("Error Handling Your Request")
                 }
-            },
-            () => {
-                setFullName("")
-                setEmail("")
-                setUsername("")
-                setPassword("")
-                setCPassword("")
-
-                if (!UserService.isLoggedIn()) return;
-                navigate("/dashboard/activity");
             })
     }
 

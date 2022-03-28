@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import BASEAPI from '../../api/baseApi'
+import AdminService from '../../api/adminService'
 import CategoryService from '../../api/categoryService'
 import Divider from '../../components/Divider'
 
@@ -18,11 +18,20 @@ const WordAdd = () => {
     const [choice4, setChoice4] = useState("")
 
     useEffect(() => {
-        CategoryService.getCategory(lessonSlug)
+        const controller = new AbortController();
+
+        CategoryService.getCategory(lessonSlug, {
+            signal: controller.signal
+        })
             .then(response => {
                 const data = response.data.category
                 setLesson(data)
             })
+            .catch((err) => { })
+
+        return () => {
+            controller.abort()
+        }
     }, [lessonSlug])
 
     const radioButton = (choice, setChoice) =>
@@ -52,25 +61,22 @@ const WordAdd = () => {
             />
         </div>
 
-        const handleSubmit = (event) => {
-            event.preventDefault()
-            const formData = new FormData()
-    
-            formData.append('category_id', lesson.id)
-            formData.append('word', wordInput)
-            formData.append('choices[0]', choice1)
-            formData.append('choices[1]', choice2)
-            formData.append('choices[2]', choice3)
-            formData.append('choices[3]', choice4)
-            formData.append('correct_answer', answer)
-            BASEAPI.post("words",
-                formData,
-            )
-                .then((response) => {
-                    navigate(-1)
-                })
-                .catch((error) => console.log(error))
-        }
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const formData = new FormData()
+
+        formData.append('category_id', lesson.id)
+        formData.append('word', wordInput)
+        formData.append('choices[0]', choice1)
+        formData.append('choices[1]', choice2)
+        formData.append('choices[2]', choice3)
+        formData.append('choices[3]', choice4)
+        formData.append('correct_answer', answer)
+        AdminService.addWord(formData)
+            .then(() => {
+                navigate(`/categories/edit/${lessonSlug}/words`)
+            })
+    }
 
     return (
         <div className="flex-1 w-fulltext-black item">

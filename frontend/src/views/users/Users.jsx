@@ -7,8 +7,16 @@ const Users = () => {
     const [userList, setUserList] = useState([]);
 
     useEffect(() => {
-        UserService.getUsers()
+        const controller = new AbortController();
+        UserService.getUsers({
+            signal: controller.signal
+        })
             .then(response => setUserList(response.data.users))
+            .catch((err) => {})
+
+        return () => {
+            controller.abort()
+        }
     }, [])
 
     return (
@@ -17,7 +25,7 @@ const Users = () => {
             <Divider />
             <div className="w-full mt-5 h-most overflow-auto no-scrollbar">
                 {
-                    userList.map((user) => <UserItem key={user.id} user={user}/>)
+                    userList.map((user) => <UserItem key={user.id} user={user} />)
                 }
             </div>
         </div>

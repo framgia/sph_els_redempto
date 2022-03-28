@@ -6,7 +6,6 @@ import Divider from '../../components/Divider'
 
 const CategoryAdd = () => {
     const navigate = useNavigate();
-
     const [lessonTitle, setLessonTitle] = useState("")
     const [lessonSlug, setLessonSlug] = useState("")
     const [lessonDescription, setLessonDescription] = useState("")
@@ -19,9 +18,9 @@ const CategoryAdd = () => {
         formData.append('slug', lessonSlug)
         formData.append('description', lessonDescription)
 
-        AdminService.addCategory(formData, () => {
-            navigate(-1)
-        })
+        AdminService.addCategory(formData,
+        )
+            .then(() => navigate("/categories/edit"))
     }
 
     return (

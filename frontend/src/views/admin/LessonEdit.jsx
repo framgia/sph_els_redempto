@@ -15,7 +15,11 @@ const LessonEdit = () => {
 
     const { lessonSlug } = useParams()
     useEffect(() => {
-        CategoryService.getCategory(lessonSlug)
+        const controller = new AbortController();
+
+        CategoryService.getCategory(lessonSlug, {
+            signal: controller.signal
+        })
             .then(response => {
                 const data = response.data.category
                 setLesson(data)
@@ -24,6 +28,11 @@ const LessonEdit = () => {
                 setLessonDescription(data.description)
                 setDisableSubmit(false)
             })
+            .catch((err) => { })
+
+        return () => {
+            controller.abort()
+        }
     }, [lessonSlug])
 
     const handleSubmit = (event) => {
@@ -33,9 +42,8 @@ const LessonEdit = () => {
         formData.append('title', lessonTitle)
         formData.append('slug', lessonSlugText)
         formData.append('description', lessonDescription)
-        AdminService.updateCategory(lessonSlug, formData, () => {
-            navigate(-1)
-        })
+        AdminService.updateCategory(lessonSlug, formData)
+            .then(() => { navigate("/categories/edit") })
     }
 
     return (
@@ -80,7 +88,7 @@ const LessonEdit = () => {
                         }}>
                     </textarea>
                     <div className="flex justify-end mt-4">
-                        <input type="submit" value="Submit" className={`btn ${disableSubmit &&'btn-disabled'}`} />
+                        <input type="submit" value="Submit" className={`btn ${disableSubmit && 'btn-disabled'}`} />
                     </div>
                 </form>
             </div>

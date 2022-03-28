@@ -1,17 +1,17 @@
 import BASEAPI from './baseApi'
 
 const CategoryService = {
-    getCategories: () => {
-        return BASEAPI.get("categories")
+    getCategories: (headers = {}) => {
+        return BASEAPI.get("categories", headers)
     },
-    getCategory: (categorySlug) => {
-        return BASEAPI.get(`categories/${categorySlug}`)
+    getCategory: (categorySlug, headers = {}) => {
+        return BASEAPI.get(`categories/${categorySlug}`, headers)
     },
-    getCategoryWords: (categorySlug) => {
-        return BASEAPI.get(`categories/${categorySlug}/words`)
+    getCategoryWords: (categorySlug, headers = {}) => {
+        return BASEAPI.get(`categories/${categorySlug}/words`, headers)
     },
-    getWord: (wordId) => {
-        return BASEAPI.get(`words/${wordId}`)
+    getWord: (wordId, headers = {}) => {
+        return BASEAPI.get(`words/${wordId}`, headers)
     } 
 }
 

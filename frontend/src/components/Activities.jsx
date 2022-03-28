@@ -8,17 +8,29 @@ const Activities = ({ user = null, followersOnly = false }) => {
 
   useEffect(() => {
     if (user == null) return
+    const controller = new AbortController();
+
     if (!followersOnly) {
-      UserService.getUserActivity(user.id)
+      UserService.getUserActivity(user.id, {
+        signal: controller.signal
+      })
         .then(response => {
           setUserActivity(response.data.attempts)
         })
+        .catch((err) => { })
     }
     else {
-      UserService.getFollowerActivity(user.id)
+      UserService.getFollowerActivity(user.id, {
+        signal: controller.signal
+      })
         .then(response => {
           setUserActivity(response.data.attempts)
         })
+        .catch((err) => { })
+    }
+
+    return () => {
+      controller.abort()
     }
   }, [user, followersOnly])
 

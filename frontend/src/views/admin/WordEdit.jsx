@@ -19,7 +19,11 @@ const WordEdit = () => {
     const [disableSubmit, setDisableSubmit] = useState(true);
 
     useEffect(() => {
-        CategoryService.getWord(wordId)
+        const controller = new AbortController();
+
+        CategoryService.getWord(wordId, {
+            signal: controller.signal
+        })
             .then(response => {
                 const wordSelected = response.data.word
                 setWordInput(wordSelected.word)
@@ -30,14 +34,28 @@ const WordEdit = () => {
                 setChoice4(wordSelected.choices[3])
                 setDisableSubmit(false)
             })
+            .catch((err) => { })
+
+        return () => {
+            controller.abort()
+        }
     }, [lessonSlug, wordId])
 
     useEffect(() => {
-        CategoryService.getCategory(lessonSlug)
+        const controller = new AbortController();
+
+        CategoryService.getCategory(lessonSlug, {
+            signal: controller.signal
+        })
             .then(response => {
                 const data = response.data.category
                 setLesson(data)
             })
+            .catch((err) => { })
+
+        return () => {
+            controller.abort()
+        }
     }, [lessonSlug])
 
     const radioButton = (choice, setChoice) =>
@@ -79,9 +97,8 @@ const WordEdit = () => {
         formData.append('choices[3]', choice4)
         formData.append('correct_answer', answer)
 
-        AdminService.updateWord(wordId, formData, () => {
-            navigate(-1)
-        })
+        AdminService.updateWord(wordId, formData)
+            .then(() => navigate(`/categories/edit/${lessonSlug}/words`))
     }
 
     return (
@@ -112,7 +129,7 @@ const WordEdit = () => {
                     {radioButton(choice3, setChoice3)}
                     {radioButton(choice4, setChoice4)}
                     <div className="flex justify-end mt-4">
-                        <input type="submit" value="Submit" className={`btn ${disableSubmit &&'btn-disabled'}`} />
+                        <input type="submit" value="Submit" className={`btn ${ disableSubmit && 'btn-disabled'}`} />
                     </div>
                 </form>
             </div>
